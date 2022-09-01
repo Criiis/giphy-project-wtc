@@ -5,9 +5,13 @@
   "main": false,
   "author": "Cristiano Luis",
   "license": "MIT",
-
+  "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
     "start": "yarn parcel index.html",
     "build": "yarn parcel build index.html"
+  },
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.7.0",
+    "parcel": "^2.7.0"
   }
 }
