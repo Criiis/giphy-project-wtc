@@ -532,6 +532,9 @@ function hmrAcceptRun(bundle, id) {
 }
 
 },{}],"3cYfC":[function(require,module,exports) {
+(function() {
+    console.log("hello world");
+})();
 
 },{}]},["7age3","3cYfC"], "3cYfC", "parcelRequireb58f")
 
