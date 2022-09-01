@@ -2,13 +2,13 @@
   "name": "giphy",
   "version": "1.0.0",
   "description": "Giphy project",
-  "main": false,
   "author": "Cristiano Luis",
   "license": "MIT",
+  "default": "index.html",
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
-    "start": "yarn parcel index.html",
-    "build": "yarn parcel build index.html"
+    "start": "parcel index.html",
+    "build": "parcel build index.html --dist-dir ./dist"
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.7.0",
