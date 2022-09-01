@@ -1,0 +1,13 @@
+{
+  "name": "giphy",
+  "version": "1.0.0",
+  "description": "Giphy project",
+  "main": false,
+  "author": "Cristiano Luis",
+  "license": "MIT",
+
+  "scripts": {
+    "start": "yarn parcel index.html",
+    "build": "yarn parcel build index.html"
+  }
+}
