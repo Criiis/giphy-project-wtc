@@ -19,11 +19,13 @@
 </head>
 
 <body>
+    <!-- header section -->
     <header>
         <h1 class="heading-1">GIPHY PROJECT</h1>
     </header>
 
-    <nav class="list--reset nav">
+    <!-- nav items -->
+    <ul class="list--reset nav">
         <li class="nav__item">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -59,40 +61,47 @@
                     fill="black" />
             </svg>
         </li>
-    </nav>
+    </ul>
 
-    <section>
-        <h2>Random</h2>
-        <picture>
-            <source type="image/webp"
-                srcset="https://media0.giphy.com/media/wndCeUBYqf4649rSrV/200w.webp?cid=ecf05e47owa3u04kwa88wj7gw2hb0ro3ghpmr3awjjo1yfun&amp;rid=200w.webp&amp;ct=g">
-            <img class="giphy-gif-img giphy-img-loaded"
-                src="https://media0.giphy.com/media/wndCeUBYqf4649rSrV/200w.gif?cid=ecf05e47owa3u04kwa88wj7gw2hb0ro3ghpmr3awjjo1yfun&amp;rid=200w.gif&amp;ct=g"
-                width="250" height="140" alt="Come On Take Note GIF by Utah Jazz"
-                style="background: rgb(255, 243, 92);">
-        </picture>
-        <button>
+    <!-- content section -->
+    <main class="main-content">
 
-            <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g clip-path="url(#clip0_38_1324)">
-                    <path d="M1.5 4V10H7.5" stroke="#074EE8" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" />
-                    <path d="M23.5 20V14H17.5" stroke="#074EE8" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" />
-                    <path
-                        d="M20.99 8.99995C20.4828 7.56674 19.6209 6.28536 18.4845 5.27537C17.3482 4.26539 15.9745 3.55972 14.4917 3.22421C13.0089 2.8887 11.4652 2.93429 10.0048 3.35673C8.54437 3.77916 7.21475 4.56467 6.14 5.63995L1.5 9.99995M23.5 14L18.86 18.36C17.7853 19.4352 16.4556 20.2207 14.9952 20.6432C13.5348 21.0656 11.9911 21.1112 10.5083 20.7757C9.02547 20.4402 7.6518 19.7345 6.51547 18.7245C5.37913 17.7145 4.51717 16.4332 4.01 15"
-                        stroke="#074EE8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </g>
-                <defs>
-                    <clipPath id="clip0_38_1324">
-                        <rect width="24" height="24" fill="white" transform="translate(0.5)" />
-                    </clipPath>
-                </defs>
-            </svg>
+        <!-- random gif section -->
+        <section class="main-content--random">
 
-            Next</button>
-    </section>
+            <h2>Random</h2>
 
+            <picture>
+                <source type="image/webp"
+                    srcset="https://media0.giphy.com/media/wndCeUBYqf4649rSrV/200w.webp?cid=ecf05e47owa3u04kwa88wj7gw2hb0ro3ghpmr3awjjo1yfun&amp;rid=200w.webp&amp;ct=g">
+                <img class="giphy-gif-img giphy-img-loaded"
+                    src="https://media0.giphy.com/media/wndCeUBYqf4649rSrV/200w.gif?cid=ecf05e47owa3u04kwa88wj7gw2hb0ro3ghpmr3awjjo1yfun&amp;rid=200w.gif&amp;ct=g"
+                    width="250" height="140" alt="Come On Take Note GIF by Utah Jazz"
+                    style="background: rgb(255, 243, 92);">
+            </picture><br />
+
+            <button>
+                <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_38_1324)">
+                        <path d="M1.5 4V10H7.5" stroke="#074EE8" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M23.5 20V14H17.5" stroke="#074EE8" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path
+                            d="M20.99 8.99995C20.4828 7.56674 19.6209 6.28536 18.4845 5.27537C17.3482 4.26539 15.9745 3.55972 14.4917 3.22421C13.0089 2.8887 11.4652 2.93429 10.0048 3.35673C8.54437 3.77916 7.21475 4.56467 6.14 5.63995L1.5 9.99995M23.5 14L18.86 18.36C17.7853 19.4352 16.4556 20.2207 14.9952 20.6432C13.5348 21.0656 11.9911 21.1112 10.5083 20.7757C9.02547 20.4402 7.6518 19.7345 6.51547 18.7245C5.37913 17.7145 4.51717 16.4332 4.01 15"
+                            stroke="#074EE8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </g>
+                    <defs>
+                        <clipPath id="clip0_38_1324">
+                            <rect width="24" height="24" fill="white" transform="translate(0.5)" />
+                        </clipPath>
+                    </defs>
+                </svg>
+
+                Next</button>
+        </section>
+
+    </main>
     <!-- <picture>
         <source type="image/webp"
             srcset="https://media0.giphy.com/media/wndCeUBYqf4649rSrV/200w.webp?cid=ecf05e47owa3u04kwa88wj7gw2hb0ro3ghpmr3awjjo1yfun&amp;rid=200w.webp&amp;ct=g">
