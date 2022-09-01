@@ -1,0 +1,16 @@
+@mixin media($media) {
+    @if $media == 'max-mobile' {@media screen and  (max-width: $mobileMax) {@content;}} //only when we need something exclusive for mobile 
+    @if $media == 'min-tablet' {@media screen and  (min-width: $tabletMin) {@content;}} // tablet up wards
+    @if $media == 'max-tablet' {@media screen and  (max-width: $tabletMax) {@content;}} // until before desktop
+    @if $media == 'only-tablet' {@media screen and  (min-width: $tabletMin) and (max-width: $tabletMax){@content;}} //only when we need something exclusive for tablet 
+    @if $media == 'min-desktop' {@media screen and  (min-width: $desktopMin) {@content;}} // desktop up wards
+}
+
+
+
+
+//usage
+
+//@include media('min-tablet') {
+//    your style -> example: padding: 100px;
+//}

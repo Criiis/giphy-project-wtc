@@ -1,0 +1,17 @@
+.nav {
+  background-color: white;
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  align-content: center;
+  flex-wrap: nowrap;
+  padding: var(--small-general-padding);
+  @include media('min-desktop') {
+    display: none;
+  }
+  &__item {
+    flex: 1 1 0px;
+    text-align: center;
+  }
+}

@@ -1,0 +1,14 @@
+:root {
+  --color-primary: #121212;
+
+  --dark-primary: #121212;
+  --light-primary: #fff;
+
+  --small-general-padding: 1.5rem;
+  --big-general-padding: 5.5rem;
+}
+
+$mobileMax: 767px;
+$tabletMin: 768px;
+$tabletMax: 1023px;
+$desktopMin: 1024px;
