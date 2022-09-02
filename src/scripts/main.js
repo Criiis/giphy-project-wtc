@@ -1,9 +1,12 @@
 /**
  * where the magic will happen all the action will happen
  */
-import data from './mock.json'
+import { API_RANDOM_GIF } from './config.js'
+import { getJSON } from './helpers.js'
+import { gifStructure } from './views/viewHelpers.js'
+// import data from './mock.json'
 
-console.log(data)
+// console.log(data)
 // console.log('hello world')
 
 //Technical requirements
@@ -28,4 +31,45 @@ console.log(data)
 // Read me file on steps to run
 // Steps required to run the project locally
 
+// fetchCall(API_RANDOM_GIF)
 
+const controlRandom = async function () {
+  try {
+    const data = await getJSON(API_RANDOM_GIF)
+    document
+      .querySelector('.random-section--picture-container')
+      .insertAdjacentHTML('beforeend', gifStructure(data))
+
+    //remove min-height
+    //make background transparent
+    //remove the before element
+
+    console.log(
+      document.querySelector('.random-section--picture-container picture')
+    )
+
+    Array.from(
+      document.querySelector('.random-section--picture-container picture')
+    ).forEach(el => {
+      console.log(el)
+    })
+
+    // document.querySelector('picture').addEventListener('load', function () {
+    //   console.log('loaded')
+
+    //   document
+    //     .querySelector('.random-section--picture-container')
+    //     .classList.add('loaded')
+    // })
+
+    // window.addEventListener("load", event => {
+    //     var image = document.querySelector('img');
+    //     var isLoaded = image.complete && image.naturalHeight !== 0;
+    //     alert(isLoaded);
+    // });
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+controlRandom()
