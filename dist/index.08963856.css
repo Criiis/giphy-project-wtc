@@ -1,9 +1,19 @@
 :root {
-  --color-primary: #121212;
+  --color-primary: #074ee8;
   --dark-primary: #121212;
   --light-primary: #fff;
   --small-general-padding: 1.5rem;
   --big-general-padding: 5.5rem;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -450px 0;
+  }
+
+  100% {
+    background-position: 450px 0;
+  }
 }
 
 .heading-4, .heading-3, .heading-2 {
@@ -44,9 +54,8 @@ body {
   font-family: Work Sans, sans-serif;
 }
 
-.list--reset {
-  padding: 0;
-  list-style: none;
+.main-content {
+  padding: var(--small-general-padding);
 }
 
 header {
@@ -72,6 +81,7 @@ header h1 {
   flex-flow: row;
   place-content: center space-evenly;
   align-items: center;
+  margin: 0;
   display: flex;
 }
 
@@ -84,6 +94,75 @@ header h1 {
 .nav__item {
   text-align: center;
   flex: 1;
+}
+
+.random-section {
+  max-width: 48rem;
+}
+
+.random-section h2 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+.random-section--picture-container {
+  width: 100%;
+  min-height: 20rem;
+  background-color: #d9d9d9;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.random-section--picture-container:before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-image: linear-gradient(to right, #d9d9d9 0%, #888b94 20%, #d9d9d9 40% 100%);
+  background-repeat: no-repeat;
+  background-size: 450px 400px;
+  animation: shimmer 2s linear infinite;
+  position: absolute;
+}
+
+.random-section--picture {
+  width: 100%;
+  height: auto;
+}
+
+.random-section--picture * {
+  width: 100%;
+}
+
+.random-section--shuffle-gif {
+  width: 100%;
+  text-align: center;
+  color: var(--color-primary);
+  flex-flow: row;
+  place-content: center;
+  align-items: center;
+  padding: 1.2rem;
+  font-size: 1.6rem;
+  display: flex;
+}
+
+.random-section--shuffle-gif svg {
+  margin-right: .5rem;
+}
+
+.list--reset {
+  padding: 0;
+  list-style: none;
+}
+
+.loaded {
+  min-height: auto;
+  background-color: #0000;
+}
+
+.loaded:before {
+  animation-play-state: paused;
+  display: none;
 }
 
 /*# sourceMappingURL=index.08963856.css.map */
