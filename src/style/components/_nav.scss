@@ -7,6 +7,7 @@
   align-content: center;
   flex-wrap: nowrap;
   padding: var(--small-general-padding);
+  margin: 0;
   @include media('min-desktop') {
     display: none;
   }

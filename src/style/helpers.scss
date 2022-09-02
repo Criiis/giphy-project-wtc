@@ -2,3 +2,12 @@
   list-style: none;
   padding: 0;
 }
+
+.loaded {
+  min-height: auto;
+  background-color: transparent;
+  &::before {
+    animation-play-state: paused;
+    display: none;
+  }
+}
