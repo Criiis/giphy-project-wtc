@@ -557,6 +557,7 @@ var _viewHelpersJs = require("./views/viewHelpers.js");
 // Read me file on steps to run
 // Steps required to run the project locally
 // fetchCall(API_RANDOM_GIF)
+//has to be all reviewed
 const controlRandom = async function() {
     try {
         const data = await (0, _helpersJs.getJSON)((0, _configJs.API_RANDOM_GIF));
@@ -564,26 +565,25 @@ const controlRandom = async function() {
         //remove min-height
         //make background transparent
         //remove the before element
-        console.log(document.querySelector(".random-section--picture-container picture"));
-        Array.from(document.querySelector(".random-section--picture-container picture")).forEach((el)=>{
+        console.log(document.querySelectorAll(".random-section--picture-container picture *"));
+        //change this to promise
+        Array.from(document.querySelectorAll(".random-section--picture-container picture *")).forEach((el)=>{
             console.log(el);
+            el.addEventListener("load", function() {
+                console.log(el, "loaded");
+                document.querySelector(".random-section--picture-container").classList.add("loaded");
+            });
         });
-    // document.querySelector('picture').addEventListener('load', function () {
-    //   console.log('loaded')
-    //   document
-    //     .querySelector('.random-section--picture-container')
-    //     .classList.add('loaded')
-    // })
-    // window.addEventListener("load", event => {
-    //     var image = document.querySelector('img');
-    //     var isLoaded = image.complete && image.naturalHeight !== 0;
-    //     alert(isLoaded);
-    // });
     } catch (err) {
         console.error(err);
     }
 };
 controlRandom();
+document.querySelector(".random-section--shuffle-gif").addEventListener("click", function() {
+    document.querySelector(".random-section--picture-container").classList.remove("loaded");
+    document.querySelector(".random-section--picture-container picture").remove();
+    controlRandom();
+});
 
 },{"./config.js":"6pDRM","./helpers.js":"luDvE","./views/viewHelpers.js":"iA7j9"}],"6pDRM":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");

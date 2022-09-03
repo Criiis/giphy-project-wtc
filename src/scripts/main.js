@@ -33,6 +33,9 @@ import { gifStructure } from './views/viewHelpers.js'
 
 // fetchCall(API_RANDOM_GIF)
 
+
+
+//has to be all reviewed
 const controlRandom = async function () {
   try {
     const data = await getJSON(API_RANDOM_GIF)
@@ -45,31 +48,37 @@ const controlRandom = async function () {
     //remove the before element
 
     console.log(
-      document.querySelector('.random-section--picture-container picture')
+      document.querySelectorAll('.random-section--picture-container picture *')
     )
 
+    //change this to promise
     Array.from(
-      document.querySelector('.random-section--picture-container picture')
+      document.querySelectorAll('.random-section--picture-container picture *')
     ).forEach(el => {
       console.log(el)
+
+      el.addEventListener('load', function () {
+        console.log(el, 'loaded')
+        document
+          .querySelector('.random-section--picture-container')
+          .classList.add('loaded')
+      })
     })
-
-    // document.querySelector('picture').addEventListener('load', function () {
-    //   console.log('loaded')
-
-    //   document
-    //     .querySelector('.random-section--picture-container')
-    //     .classList.add('loaded')
-    // })
-
-    // window.addEventListener("load", event => {
-    //     var image = document.querySelector('img');
-    //     var isLoaded = image.complete && image.naturalHeight !== 0;
-    //     alert(isLoaded);
-    // });
   } catch (err) {
     console.error(err)
   }
 }
 
 controlRandom()
+
+document
+  .querySelector('.random-section--shuffle-gif')
+  .addEventListener('click', function () {
+    document
+      .querySelector('.random-section--picture-container')
+      .classList.remove('loaded')
+    document
+      .querySelector('.random-section--picture-container picture')
+      .remove()
+    controlRandom()
+  })
