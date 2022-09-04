@@ -2,7 +2,12 @@
  * where the magic will happen all the action will happen
  */
 import { API_RANDOM_GIF } from './config.js'
-import { getJSON, imageLoadChecker } from './helpers.js'
+import {
+  errorLoading,
+  getJSON,
+  gifLoading,
+  imageLoadChecker,
+} from './helpers.js'
 import randomView from './views/randomView.js'
 import { gifStructure } from './views/viewHelpers.js'
 // import data from './mock.json'
@@ -32,7 +37,6 @@ import { gifStructure } from './views/viewHelpers.js'
 // Read me file on steps to run
 // Steps required to run the project locally
 
-
 //has to be all reviewed
 const controlRandom = async function () {
   try {
@@ -40,10 +44,7 @@ const controlRandom = async function () {
     const data = await getJSON(API_RANDOM_GIF) //TODO: @PARAM URL
     console.log(data)
 
-    // create and insert the image element into HTML behind the loading container
-    randomView
-      .pictureParentSection()
-      .insertAdjacentHTML('beforeend', gifStructure(data)) //TODO: @PARAM parent div of image
+    gifLoading(randomView.pictureParentSection(), data) //TODO: @PARAM parent div of image
 
     // create a promise for the image to remove the loading screen only after the image is loaded
     await Promise.all(
@@ -56,7 +57,7 @@ const controlRandom = async function () {
     )
   } catch (err) {
     console.error(err)
-    console.error(`${err}, err, dsakghjasdgasdkasgdkgkhsad`)
+    errorLoading(randomView.pictureParentSection(), err.message)
   }
 }
 

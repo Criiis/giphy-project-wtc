@@ -1,3 +1,5 @@
+import { gifError, gifStructure } from './views/viewHelpers'
+
 // This file contains all the functions that will be used multiple times
 
 /**
@@ -36,13 +38,34 @@ export const getJSON = async url => {
 export const imageLoadChecker = imageElement => {
   return new Promise((resolve, reject) => {
     imageElement.addEventListener('load', function () {
-      console.log('loaded')
       resolve(this)
     })
 
     imageElement.addEventListener('error', function () {
-      reject(new Error(`Image not found.`))
-      // throw err
+      reject(new Error(`Image not found`))
     })
   })
+}
+
+/**
+ * clean div and add data to page
+ * @param {*} imageParentContainer -> parent of the picture element
+ * @param {*} data -> data to build the structure
+ */
+export const gifLoading = (imageParentContainer, data) => {
+  imageParentContainer.classList.remove('error')
+  imageParentContainer.innerHTML = ''
+  // create and insert the image element into HTML behind the loading container
+  imageParentContainer.insertAdjacentHTML('beforeend', gifStructure(data))
+}
+
+/**
+ * clean div and add error to page
+ * @param {*} imageParentContainer -> parent of the picture element
+ * @param {*} error -> error message to print
+ */
+export const errorLoading = (imageParentContainer, error) => {
+  imageParentContainer.innerHTML = ''
+  imageParentContainer.insertAdjacentHTML('beforeend', gifError(error))
+  imageParentContainer.classList.add('error')
 }
