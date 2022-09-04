@@ -1,5 +1,8 @@
 .random-section {
-  max-width: 48rem;
+  // max-width: 48rem;
+  // display: none;
+  width: 100%;
+
   h2 {
     margin-top: 0;
     margin-bottom: 1.5rem;
@@ -11,7 +14,6 @@
     background-color: #d9d9d9;
     margin-bottom: 1.5rem;
     position: relative;
-
     display: flex;
     align-content: center;
     align-items: center;
@@ -49,23 +51,6 @@
     height: auto;
     * {
       width: 100%;
-    }
-  }
-
-  &--shuffle-gif {
-    width: 100%;
-    text-align: center;
-    padding: 1.2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    align-content: center;
-    flex-wrap: nowrap;
-    flex-direction: row;
-    font-size: 1.6rem;
-    color: var(--color-primary);
-    svg {
-      margin-right: 0.5rem;
     }
   }
 }

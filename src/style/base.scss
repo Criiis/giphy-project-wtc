@@ -20,4 +20,13 @@ body {
 
 .main-content {
   padding: var(--small-general-padding);
+  @include media('min-desktop') {
+    display: grid;
+    grid-template-columns: 48rem calc(100% - 48rem);
+  }
+
+  section {
+    width: 100%;
+    padding: 0 2rem;
+  }
 }

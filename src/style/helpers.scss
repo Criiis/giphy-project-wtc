@@ -21,3 +21,21 @@
     display: none;
   }
 }
+
+.btn {
+  width: 100%;
+  text-align: center;
+  padding: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  font-size: 1.6rem;
+  cursor: pointer;
+  color: var(--color-primary);
+  svg {
+    margin-right: 0.5rem;
+  }
+}

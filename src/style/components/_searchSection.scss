@@ -1,0 +1,35 @@
+.search-section {
+  @include media('min-desktop') {
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+  }
+  h2 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+  }
+
+  &--form {
+    margin-bottom: 1.5rem;
+    label {
+      font-size: 1.4rem;
+    }
+    input[type='text'] {
+      width: 100%;
+      padding: 1.2rem;
+      font-size: 1.6rem;
+      margin-bottom: 1.5rem;
+    }
+  }
+
+  &--results {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 1.5rem;
+    @include media('min-desktop') {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  picture * {
+    width: 100%;
+  }
+}
