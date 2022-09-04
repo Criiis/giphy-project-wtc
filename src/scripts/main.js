@@ -1,7 +1,7 @@
 /**
  * where the magic will happen all the action will happen
  */
-import { API_RANDOM_GIF } from './config.js'
+import { API_RANDOM_GIF, API_SEARCH_GIF } from './config.js'
 import {
   errorLoading,
   getJSON,
@@ -37,7 +37,7 @@ import { gifStructure } from './views/viewHelpers.js'
 // Read me file on steps to run
 // Steps required to run the project locally
 
-//has to be all reviewed
+//for random gif
 const controlRandom = async function () {
   try {
     // get API data
@@ -61,7 +61,39 @@ const controlRandom = async function () {
   }
 }
 
+//for search gif
+const searchRandom = async function () {
+  try {
+    // get API data
+    const data = await getJSON(`${API_SEARCH_GIF}&q=cats`)
+    console.log(data)
+
+    data.forEach(
+      ({ title, images }) =>
+        document.querySelector('.search-section--results').insertAdjacentHTML(
+          'beforeend',
+          `
+        <picture class="">
+            <source type="image/webp" media="(max-width: 728px)" srcset="${images.fixed_height.webp}" /> 
+            <source type="image/webp" srcset="${images.original.webp}" />
+            <source media="(max-width: 728px)" srcset="${images.downsized.url}" />
+            <img src="${images.original.url}" alt="${title}" loading="lazy" />
+        </picture>
+        `
+        ) //getting the smallest image possible instead of the big ones
+    )
+  } catch (err) {
+    console.error(err)
+  }
+}
+
 ;(function () {
   controlRandom() // initialize the random gif
   randomView.reloadHandler(controlRandom) //add click event for "next" in random section
+
+  //testing
+  searchRandom()
+
+  //testing
+  // searchRandom()
 })()

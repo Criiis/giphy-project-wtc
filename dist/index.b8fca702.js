@@ -559,7 +559,7 @@ var _viewHelpersJs = require("./views/viewHelpers.js");
 // Error handling is considered
 // Read me file on steps to run
 // Steps required to run the project locally
-//has to be all reviewed
+//for random gif
 const controlRandom = async function() {
     try {
         // get API data
@@ -580,11 +580,34 @@ const controlRandom = async function() {
         (0, _helpersJs.errorLoading)((0, _randomViewJsDefault.default).pictureParentSection(), err.message);
     }
 };
+//for search gif
+const searchRandom = async function() {
+    try {
+        // get API data
+        const data = await (0, _helpersJs.getJSON)(`${(0, _configJs.API_SEARCH_GIF)}&q=cats`);
+        console.log(data);
+        data.forEach(({ title , images  })=>document.querySelector(".search-section--results").insertAdjacentHTML("beforeend", `
+        <picture class="">
+            <source type="image/webp" media="(max-width: 728px)" srcset="${images.fixed_height.webp}" /> 
+            <source type="image/webp" srcset="${images.original.webp}" />
+            <source media="(max-width: 728px)" srcset="${images.downsized.url}" />
+            <img src="${images.original.url}" alt="${title}" loading="lazy" />
+        </picture>
+        `) //getting the smallest image possible instead of the big ones
+        );
+    } catch (err) {
+        console.error(err);
+    }
+};
 (function() {
     controlRandom() // initialize the random gif
     ;
     (0, _randomViewJsDefault.default).reloadHandler(controlRandom) //add click event for "next" in random section
     ;
+    //testing
+    searchRandom();
+//testing
+// searchRandom()
 })();
 
 },{"./config.js":"6pDRM","./helpers.js":"luDvE","./views/randomView.js":"9yuIi","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/viewHelpers.js":"iA7j9"}],"6pDRM":[function(require,module,exports) {
@@ -597,12 +620,18 @@ parcelHelpers.export(exports, "API_TRENDING_GIF", ()=>API_TRENDING_GIF);
 parcelHelpers.export(exports, "API_SEARCH_GIF", ()=>API_SEARCH_GIF);
 const API_URL = "https://api.giphy.com/v1/gifs/";
 const API_TOKEN = "XSRthheAmTaIEIj4hLXVcyseFf4ME5Aa";
-const API_RANDOM_GIF = `${API_URL}random?api_key=${API_TOKEN}&lang='en'&rating=g`;
+const API_RANDOM_GIF = `${API_URL}random?api_key=${API_TOKEN}&lang=en&rating=g`;
 const API_TRENDING_GIF = `${API_URL}trending?api_key=${API_TOKEN}`;
-const API_SEARCH_GIF = `${API_URL}search?api_key=${API_TOKEN}` // RANDOM -> `${API_RANDOM_GIF}`
- // TRENDING -> `${API_TRENDING_GIF}`
- // SEARCH -> `${API_SEARCH_GIF}&q:cheeseburgers`
-;
+const API_SEARCH_GIF = `${API_URL}search?api_key=${API_TOKEN}`;
+// RANDOM -> `${API_RANDOM_GIF}`
+// TRENDING -> `${API_TRENDING_GIF}`
+// SEARCH -> `${API_SEARCH_GIF}&q=cheeseburgers`
+// https://api.giphy.com/v1/gifs/search?api_key=XSRthheAmTaIEIj4hLXVcyseFf4ME5Aa&q=cheeseburgers
+// https://api.giphy.com/v1/gifs/search?api_key=XSRthheAmTaIEIj4hLXVcyseFf4ME5Aa&q:cheeseburgers
+// https://api.giphy.com/v1/gifs/search?api_key=XSRthheAmTaIEIj4hLXVcyseFf4ME5Aa&q:cheeseburgers&q:cheeseburgers
+console.log(API_RANDOM_GIF);
+console.log(API_TRENDING_GIF);
+console.log(`${API_SEARCH_GIF}&q=cheeseburgers`);
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
 exports.interopDefault = function(a) {
@@ -689,10 +718,10 @@ parcelHelpers.export(exports, "gifStructure", ()=>gifStructure);
 parcelHelpers.export(exports, "gifError", ()=>gifError);
 const gifStructure = ({ title , images  })=>`
 <picture class="random-section--picture">
-    <source type="image/webp" media="(max-width: 728px)" srcset="${images.fixed_height.webp}" > 
-    <source type="image/webp" srcset="${images.original.webp}"></source> 
-    <source media="(max-width: 728px)" srcset="${images.downsized.url}">
-    <img src="${images.original.url}" alt="${title}" loading="lazy">
+    <source type="image/webp" media="(max-width: 728px)" srcset="${images.fixed_height.webp}" /> 
+    <source type="image/webp" srcset="${images.original.webp}" />
+    <source media="(max-width: 728px)" srcset="${images.downsized.url}" />
+    <img src="${images.original.url}" alt="${title}" loading="lazy" />
 </picture>
 `;
 const gifError = (message)=>`<p>Sorry, ${message}. Try again.</p>`;

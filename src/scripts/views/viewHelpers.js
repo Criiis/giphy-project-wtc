@@ -1,9 +1,9 @@
 export const gifStructure = ({ title, images }) => `
 <picture class="random-section--picture">
-    <source type="image/webp" media="(max-width: 728px)" srcset="${images.fixed_height.webp}" > 
-    <source type="image/webp" srcset="${images.original.webp}"></source> 
-    <source media="(max-width: 728px)" srcset="${images.downsized.url}">
-    <img src="${images.original.url}" alt="${title}" loading="lazy">
+    <source type="image/webp" media="(max-width: 728px)" srcset="${images.fixed_height.webp}" /> 
+    <source type="image/webp" srcset="${images.original.webp}" />
+    <source media="(max-width: 728px)" srcset="${images.downsized.url}" />
+    <img src="${images.original.url}" alt="${title}" loading="lazy" />
 </picture>
 `
 
