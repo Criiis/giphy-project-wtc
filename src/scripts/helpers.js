@@ -23,11 +23,26 @@ export const getJSON = async url => {
     if (!res.ok) throw new Error(`Couldn't fetch data, pls try again!`)
     const { data } = await res.json()
     return data
-  } catch (error) {
-    console.error(error)
+  } catch (err) {
+    throw err
   }
 }
 
-// export const resetImageLoading = element => {
-//   element.classList.add('.loaded')
-// }
+/**
+ * will return a fulfilled or a rejected promise when the imageElement param is loaded
+ * @param {*} imageElement
+ * @returns
+ */
+export const imageLoadChecker = imageElement => {
+  return new Promise((resolve, reject) => {
+    imageElement.addEventListener('load', function () {
+      console.log('loaded')
+      resolve(this)
+    })
+
+    imageElement.addEventListener('error', function () {
+      reject(new Error(`Image not found.`))
+      // throw err
+    })
+  })
+}
