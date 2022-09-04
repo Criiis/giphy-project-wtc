@@ -566,8 +566,7 @@ const controlRandom = async function() {
         const data = await (0, _helpersJs.getJSON)((0, _configJs.API_RANDOM_GIF)) //TODO: @PARAM URL
         ;
         console.log(data);
-        // create and insert the image element into HTML behind the loading container
-        (0, _randomViewJsDefault.default).pictureParentSection().insertAdjacentHTML("beforeend", (0, _viewHelpersJs.gifStructure)(data)) //TODO: @PARAM parent div of image
+        (0, _helpersJs.gifLoading)((0, _randomViewJsDefault.default).pictureParentSection(), data) //TODO: @PARAM parent div of image
         ;
         // create a promise for the image to remove the loading screen only after the image is loaded
         await Promise.all(Array.from((0, _randomViewJsDefault.default).pictureSectionElements()).map(async (image)=>{
@@ -578,7 +577,7 @@ const controlRandom = async function() {
         }));
     } catch (err) {
         console.error(err);
-        console.error(`${err}, err, dsakghjasdgasdkasgdkgkhsad`);
+        (0, _helpersJs.errorLoading)((0, _randomViewJsDefault.default).pictureParentSection(), err.message);
     }
 };
 (function() {
@@ -588,7 +587,7 @@ const controlRandom = async function() {
     ;
 })();
 
-},{"./config.js":"6pDRM","./helpers.js":"luDvE","./views/viewHelpers.js":"iA7j9","./views/randomView.js":"9yuIi","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"6pDRM":[function(require,module,exports) {
+},{"./config.js":"6pDRM","./helpers.js":"luDvE","./views/randomView.js":"9yuIi","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/viewHelpers.js":"iA7j9"}],"6pDRM":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "API_URL", ()=>API_URL);
@@ -641,6 +640,9 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "timeout", ()=>timeout);
 parcelHelpers.export(exports, "getJSON", ()=>getJSON);
 parcelHelpers.export(exports, "imageLoadChecker", ()=>imageLoadChecker);
+parcelHelpers.export(exports, "gifLoading", ()=>gifLoading);
+parcelHelpers.export(exports, "errorLoading", ()=>errorLoading);
+var _viewHelpers = require("./views/viewHelpers");
 const timeout = function(s) {
     return new Promise(function(_, reject) {
         setTimeout(function() {
@@ -661,20 +663,30 @@ const getJSON = async (url)=>{
 const imageLoadChecker = (imageElement)=>{
     return new Promise((resolve, reject)=>{
         imageElement.addEventListener("load", function() {
-            console.log("loaded");
             resolve(this);
         });
         imageElement.addEventListener("error", function() {
-            reject(new Error(`Image not found.`));
-        // throw err
+            reject(new Error(`Image not found`));
         });
     });
 };
+const gifLoading = (imageParentContainer, data)=>{
+    imageParentContainer.classList.remove("error");
+    imageParentContainer.innerHTML = "";
+    // create and insert the image element into HTML behind the loading container
+    imageParentContainer.insertAdjacentHTML("beforeend", (0, _viewHelpers.gifStructure)(data));
+};
+const errorLoading = (imageParentContainer, error)=>{
+    imageParentContainer.innerHTML = "";
+    imageParentContainer.insertAdjacentHTML("beforeend", (0, _viewHelpers.gifError)(error));
+    imageParentContainer.classList.add("error");
+};
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"iA7j9":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/viewHelpers":"iA7j9"}],"iA7j9":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "gifStructure", ()=>gifStructure);
+parcelHelpers.export(exports, "gifError", ()=>gifError);
 const gifStructure = ({ title , images  })=>`
 <picture class="random-section--picture">
     <source type="image/webp" media="(max-width: 728px)" srcset="${images.fixed_height.webp}" > 
@@ -683,6 +695,7 @@ const gifStructure = ({ title , images  })=>`
     <img src="${images.original.url}" alt="${title}" loading="lazy">
 </picture>
 `;
+const gifError = (message)=>`<p>Sorry, ${message}. Try again.</p>`;
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"9yuIi":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");

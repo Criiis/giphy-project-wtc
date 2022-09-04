@@ -73,6 +73,15 @@ body {
   display: none;
 }
 
+.random-section--picture-container.error > p {
+  color: red;
+}
+
+.random-section--picture-container.error:before {
+  animation-play-state: paused;
+  display: none;
+}
+
 header {
   padding: var(--small-general-padding);
   text-align: center;
@@ -124,7 +133,11 @@ header h1 {
   width: 100%;
   min-height: 20rem;
   background-color: #d9d9d9;
+  flex-flow: column;
+  place-content: center;
+  align-items: center;
   margin-bottom: 1.5rem;
+  display: flex;
   position: relative;
 }
 
