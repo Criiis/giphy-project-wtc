@@ -11,3 +11,13 @@
     display: none;
   }
 }
+
+%error {
+  > p {
+    color: red;
+  }
+  &::before {
+    animation-play-state: paused;
+    display: none;
+  }
+}
