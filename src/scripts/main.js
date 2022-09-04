@@ -2,7 +2,8 @@
  * where the magic will happen all the action will happen
  */
 import { API_RANDOM_GIF } from './config.js'
-import { getJSON } from './helpers.js'
+import { getJSON, imageLoadChecker } from './helpers.js'
+import randomView from './views/randomView.js'
 import { gifStructure } from './views/viewHelpers.js'
 // import data from './mock.json'
 
@@ -31,54 +32,35 @@ import { gifStructure } from './views/viewHelpers.js'
 // Read me file on steps to run
 // Steps required to run the project locally
 
-// fetchCall(API_RANDOM_GIF)
-
-
 
 //has to be all reviewed
 const controlRandom = async function () {
   try {
-    const data = await getJSON(API_RANDOM_GIF)
-    document
-      .querySelector('.random-section--picture-container')
-      .insertAdjacentHTML('beforeend', gifStructure(data))
+    // get API data
+    const data = await getJSON(API_RANDOM_GIF) //TODO: @PARAM URL
+    console.log(data)
 
-    //remove min-height
-    //make background transparent
-    //remove the before element
+    // create and insert the image element into HTML behind the loading container
+    randomView
+      .pictureParentSection()
+      .insertAdjacentHTML('beforeend', gifStructure(data)) //TODO: @PARAM parent div of image
 
-    console.log(
-      document.querySelectorAll('.random-section--picture-container picture *')
-    )
-
-    //change this to promise
-    Array.from(
-      document.querySelectorAll('.random-section--picture-container picture *')
-    ).forEach(el => {
-      console.log(el)
-
-      el.addEventListener('load', function () {
-        console.log(el, 'loaded')
-        document
-          .querySelector('.random-section--picture-container')
-          .classList.add('loaded')
+    // create a promise for the image to remove the loading screen only after the image is loaded
+    await Promise.all(
+      Array.from(randomView.pictureSectionElements()).map(async image => {
+        // get response from image loader checker function
+        await imageLoadChecker(image)
+        // add class loaded if the promise fulfilled
+        image.closest(randomView.imageParent).classList.add('loaded')
       })
-    })
+    )
   } catch (err) {
     console.error(err)
+    console.error(`${err}, err, dsakghjasdgasdkasgdkgkhsad`)
   }
 }
 
-controlRandom()
-
-document
-  .querySelector('.random-section--shuffle-gif')
-  .addEventListener('click', function () {
-    document
-      .querySelector('.random-section--picture-container')
-      .classList.remove('loaded')
-    document
-      .querySelector('.random-section--picture-container picture')
-      .remove()
-    controlRandom()
-  })
+;(function () {
+  controlRandom() // initialize the random gif
+  randomView.reloadHandler(controlRandom) //add click event for "next" in random section
+})()

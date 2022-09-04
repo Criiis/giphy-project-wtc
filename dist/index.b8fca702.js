@@ -532,10 +532,13 @@ function hmrAcceptRun(bundle, id) {
 }
 
 },{}],"3cYfC":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 /**
  * where the magic will happen all the action will happen
  */ var _configJs = require("./config.js");
 var _helpersJs = require("./helpers.js");
+var _randomViewJs = require("./views/randomView.js");
+var _randomViewJsDefault = parcelHelpers.interopDefault(_randomViewJs);
 var _viewHelpersJs = require("./views/viewHelpers.js");
 // import data from './mock.json'
 // console.log(data)
@@ -556,36 +559,36 @@ var _viewHelpersJs = require("./views/viewHelpers.js");
 // Error handling is considered
 // Read me file on steps to run
 // Steps required to run the project locally
-// fetchCall(API_RANDOM_GIF)
 //has to be all reviewed
 const controlRandom = async function() {
     try {
-        const data = await (0, _helpersJs.getJSON)((0, _configJs.API_RANDOM_GIF));
-        document.querySelector(".random-section--picture-container").insertAdjacentHTML("beforeend", (0, _viewHelpersJs.gifStructure)(data));
-        //remove min-height
-        //make background transparent
-        //remove the before element
-        console.log(document.querySelectorAll(".random-section--picture-container picture *"));
-        //change this to promise
-        Array.from(document.querySelectorAll(".random-section--picture-container picture *")).forEach((el)=>{
-            console.log(el);
-            el.addEventListener("load", function() {
-                console.log(el, "loaded");
-                document.querySelector(".random-section--picture-container").classList.add("loaded");
-            });
-        });
+        // get API data
+        const data = await (0, _helpersJs.getJSON)((0, _configJs.API_RANDOM_GIF)) //TODO: @PARAM URL
+        ;
+        console.log(data);
+        // create and insert the image element into HTML behind the loading container
+        (0, _randomViewJsDefault.default).pictureParentSection().insertAdjacentHTML("beforeend", (0, _viewHelpersJs.gifStructure)(data)) //TODO: @PARAM parent div of image
+        ;
+        // create a promise for the image to remove the loading screen only after the image is loaded
+        await Promise.all(Array.from((0, _randomViewJsDefault.default).pictureSectionElements()).map(async (image)=>{
+            // get response from image loader checker function
+            await (0, _helpersJs.imageLoadChecker)(image);
+            // add class loaded if the promise fulfilled
+            image.closest((0, _randomViewJsDefault.default).imageParent).classList.add("loaded");
+        }));
     } catch (err) {
         console.error(err);
+        console.error(`${err}, err, dsakghjasdgasdkasgdkgkhsad`);
     }
 };
-controlRandom();
-document.querySelector(".random-section--shuffle-gif").addEventListener("click", function() {
-    document.querySelector(".random-section--picture-container").classList.remove("loaded");
-    document.querySelector(".random-section--picture-container picture").remove();
-    controlRandom();
-});
+(function() {
+    controlRandom() // initialize the random gif
+    ;
+    (0, _randomViewJsDefault.default).reloadHandler(controlRandom) //add click event for "next" in random section
+    ;
+})();
 
-},{"./config.js":"6pDRM","./helpers.js":"luDvE","./views/viewHelpers.js":"iA7j9"}],"6pDRM":[function(require,module,exports) {
+},{"./config.js":"6pDRM","./helpers.js":"luDvE","./views/viewHelpers.js":"iA7j9","./views/randomView.js":"9yuIi","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"6pDRM":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "API_URL", ()=>API_URL);
@@ -637,6 +640,7 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "timeout", ()=>timeout);
 parcelHelpers.export(exports, "getJSON", ()=>getJSON);
+parcelHelpers.export(exports, "imageLoadChecker", ()=>imageLoadChecker);
 const timeout = function(s) {
     return new Promise(function(_, reject) {
         setTimeout(function() {
@@ -650,13 +654,22 @@ const getJSON = async (url)=>{
         if (!res.ok) throw new Error(`Couldn't fetch data, pls try again!`);
         const { data  } = await res.json();
         return data;
-    } catch (error) {
-        console.error(error);
+    } catch (err) {
+        throw err;
     }
-} // export const resetImageLoading = element => {
- //   element.classList.add('.loaded')
- // }
-;
+};
+const imageLoadChecker = (imageElement)=>{
+    return new Promise((resolve, reject)=>{
+        imageElement.addEventListener("load", function() {
+            console.log("loaded");
+            resolve(this);
+        });
+        imageElement.addEventListener("error", function() {
+            reject(new Error(`Image not found.`));
+        // throw err
+        });
+    });
+};
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"iA7j9":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -670,6 +683,36 @@ const gifStructure = ({ title , images  })=>`
     <img src="${images.original.url}" alt="${title}" loading="lazy">
 </picture>
 `;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"9yuIi":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+class RandomView {
+    _parentElement = document.querySelector("section.random-section");
+    imageParent = ".random-section--picture-container";
+    // picture container -> this will be very important element as it is the one with loading screen
+    pictureParentSection = ()=>this._parentElement.querySelector(this.imageParent);
+    // picture element
+    pictureSection = ()=>this.pictureParentSection().querySelector("picture");
+    // all elements inside the picture
+    pictureSectionElements = ()=>this.pictureSection().querySelectorAll("*");
+    // shuffle button
+    _shuffleCTA = this._parentElement.querySelector(".random-section--shuffle-gif");
+    //reload functionality for CTA
+    reloadHandler(handler) {
+        this._shuffleCTA.addEventListener("click", ()=>{
+            this._resetSection() //bind(this) wasn't working with a traditional function not sure why, so transformed this into arrow function :$
+            ;
+            handler();
+        });
+    }
+    //reset section for random gif
+    _resetSection() {
+        this.pictureParentSection().classList.remove("loaded");
+        this.pictureSection().remove();
+    }
+}
+exports.default = new RandomView();
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["7age3","3cYfC"], "3cYfC", "parcelRequireb58f")
 
