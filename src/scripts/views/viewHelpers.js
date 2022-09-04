@@ -7,6 +7,8 @@ export const gifStructure = ({ title, images }) => `
 </picture>
 `
 
+export const gifError = message => `<p>Sorry, ${message}. Try again.</p>`
+
 // bitly_gif_url: "https://gph.is/g/46qmJ69"
 // bitly_url: "https://gph.is/g/46qmJ69"
 // content_url: ""
