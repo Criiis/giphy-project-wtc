@@ -47,6 +47,27 @@ export const imageLoadChecker = imageElement => {
 }
 
 /**
+ *
+ * @param {*} pictureChild
+ * @param {*} pictureParent
+ * @returns
+ */
+export const promiseAllImage = async (pictureChild, pictureParent) => {
+  try {
+    return await Promise.all(
+      Array.from(pictureChild).map(async image => {
+        // get response from image loader checker function
+        await imageLoadChecker(image)
+        // add class loaded if the promise fulfilled
+        image.closest(pictureParent)?.classList.add('loaded')
+      })
+    )
+  } catch (error) {
+    throw error
+  }
+}
+
+/**
  * clean div and add data to page
  * @param {*} imageParentContainer -> parent of the picture element
  * @param {*} data -> data to build the structure
@@ -63,8 +84,9 @@ export const gifLoading = (imageParentContainer, data) => {
  * @param {*} imageParentContainer -> parent of the picture element
  * @param {*} error -> error message to print
  */
-export const errorLoading = (element, imageContainer, error) => {
-  element = element.closest(imageContainer) //had to do this cause element can be an image and i need the container of the picture/image checky tho
+export const errorLoading = (element, error, imageContainer = undefined) => {
+  element = imageContainer ? element.closest(imageContainer) : element //had to do this cause element can be an image and i need the container of the picture/image checky tho
+  console.log(element)
   element.innerHTML = ''
   element.insertAdjacentHTML('beforeend', gifError(error))
   element.classList.add('error')
