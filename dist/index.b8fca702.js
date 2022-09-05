@@ -539,71 +539,19 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _helpersJs = require("./helpers.js");
 var _randomViewJs = require("./views/randomView.js");
 var _randomViewJsDefault = parcelHelpers.interopDefault(_randomViewJs);
+var _searchViewJs = require("./views/searchView.js");
+var _searchViewJsDefault = parcelHelpers.interopDefault(_searchViewJs);
 var _viewHelpersJs = require("./views/viewHelpers.js");
-// import data from './mock.json'
-//Technical requirements
-// You are free to implement this application in your choice of frontend language, e.g. jQuery, React, etc. the assessment is more to ascertain how you are doing in frontend so far rather than checking your ability in a certain codebase.
-// Please use your CSS knowledge to present the application nicely and bring it to life, but we’re not looking for a professional design here, just a user engaging and friendly experience (not an unstyled application). Please use some colour!
-// Delivery requirements
-// Once you have completed your mini project and you are happy for it to be reviewed, please ensure you include a readme file (if any steps required to run it) and commit the application to your GitHub – add the link to the task on the board for review. Alternative you could also ZIP up the package and attach it to the task on the board if GitHub isn’t an option for you.
-// You should allocate 3 days to this task.
-// Acceptance Criteria
-// HTML is valid W3C standard
-// CSS class names use BEM
-// The CSS is mobile first and responsive
-// There is validation for a blank search
-// Loading time is considered
-// Error handling is considered
-// Read me file on steps to run
-// Steps required to run the project locally
-//for search gif
-const searchRandom = async function(querySearch) {
-    try {
-        // get API data
-        const data = await (0, _helpersJs.getJSON)(`${(0, _configJs.API_SEARCH_GIF)}&q=${querySearch}`);
-        console.log(data);
-        if (data.length === 0) throw new Error("Could not find any results, try again.");
-        data.forEach(({ title , images  })=>document.querySelector(".search-section--results").insertAdjacentHTML("beforeend", `
-          <div class="search-section--picture-container">
-        <picture class="">
-          <source type="image/webp" srcset="${images.preview_webp.url}" />
-          <img src="${images.preview_gif.url}" alt="${title}" loading="lazy" />
-        </picture>
-        </div>
-        `) //getting the smallest image possible instead of the big ones
-        );
-        for(let i = 0; i < document.querySelectorAll(".search-section--picture-container").length; i++){
-            const container = document.querySelectorAll(".search-section--picture-container")[i];
-            console.log(container);
-            // console.log(container.querySelectorAll('picture *'))
-            Promise.all(Array.from(container.querySelectorAll("picture *")).map(async (image)=>{
-                // get response from image loader checker function
-                await (0, _helpersJs.imageLoadChecker)(image);
-                // add class loaded if the promise fulfilled
-                image.closest(".search-section--picture-container").classList.add("loaded");
-            }));
-        }
-    } catch (err) {
-        console.error(err);
-    }
-};
 (function() {
     (0, _randomViewJsDefault.default).controlRandom() // initialize the random gif
     ;
     (0, _randomViewJsDefault.default).reloadHandler() //add click event for "next" in random section
     ;
     //add search functionality
-    document.querySelector(".search-section .search-section--form .btn").addEventListener("click", function(e) {
-        e.preventDefault();
-        const searchValue = document.querySelector(".search-section--form input#search");
-        document.querySelector(".search-section--results").innerHTML = "";
-        searchRandom(searchValue.value);
-        console.log(searchValue);
-        searchValue.value = "";
-    });
+    (0, _searchViewJsDefault.default).searchHandler();
 })();
 
-},{"./config.js":"6pDRM","./helpers.js":"luDvE","./views/randomView.js":"9yuIi","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/viewHelpers.js":"iA7j9"}],"6pDRM":[function(require,module,exports) {
+},{"./config.js":"6pDRM","./helpers.js":"luDvE","./views/randomView.js":"9yuIi","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/searchView.js":"bLyxo","./views/viewHelpers.js":"iA7j9"}],"6pDRM":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "API_URL", ()=>API_URL);
@@ -662,6 +610,7 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "timeout", ()=>timeout);
 parcelHelpers.export(exports, "getJSON", ()=>getJSON);
 parcelHelpers.export(exports, "imageLoadChecker", ()=>imageLoadChecker);
+parcelHelpers.export(exports, "promiseAllImage", ()=>promiseAllImage);
 parcelHelpers.export(exports, "gifLoading", ()=>gifLoading);
 parcelHelpers.export(exports, "errorLoading", ()=>errorLoading);
 var _viewHelpers = require("./views/viewHelpers");
@@ -692,15 +641,28 @@ const imageLoadChecker = (imageElement)=>{
         });
     });
 };
+const promiseAllImage = async (pictureChild, pictureParent)=>{
+    try {
+        return await Promise.all(Array.from(pictureChild).map(async (image)=>{
+            // get response from image loader checker function
+            await imageLoadChecker(image);
+            // add class loaded if the promise fulfilled
+            image.closest(pictureParent)?.classList.add("loaded");
+        }));
+    } catch (error) {
+        throw error;
+    }
+};
 const gifLoading = (imageParentContainer, data)=>{
     imageParentContainer.classList.remove("error");
     imageParentContainer.innerHTML = "";
     // create and insert the image element into HTML behind the loading container
     imageParentContainer.insertAdjacentHTML("beforeend", (0, _viewHelpers.gifStructure)(data));
 };
-const errorLoading = (element, imageContainer, error)=>{
-    element = element.closest(imageContainer) //had to do this cause element can be an image and i need the container of the picture/image checky tho
+const errorLoading = (element, error, imageContainer)=>{
+    element = imageContainer ? element.closest(imageContainer) : element //had to do this cause element can be an image and i need the container of the picture/image checky tho
     ;
+    console.log(element);
     element.innerHTML = "";
     element.insertAdjacentHTML("beforeend", (0, _viewHelpers.gifError)(error));
     element.classList.add("error");
@@ -711,6 +673,7 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "gifStructure", ()=>gifStructure);
 parcelHelpers.export(exports, "gifError", ()=>gifError);
+parcelHelpers.export(exports, "singleGifContainer", ()=>singleGifContainer);
 const gifStructure = ({ title , images  })=>`
 <picture class="random-section--picture">
     <source type="image/webp" media="(max-width: 728px)" srcset="${images.preview_webp.url}}" /> 
@@ -720,6 +683,8 @@ const gifStructure = ({ title , images  })=>`
 </picture>
 `;
 const gifError = (message)=>`<p>Sorry, ${message}. Try again.</p>`;
+const singleGifContainer = (data)=>`
+<div class="search-section--picture-container">${gifStructure(data)}</div>`;
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"9yuIi":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -747,32 +712,79 @@ class RandomView {
     }
     //reset section for random gif
     _resetSection() {
-        this.pictureParentSection().classList.remove("loaded");
-        this.pictureSection().remove();
+        this.pictureParentSection()?.classList.remove("loaded");
+        this.pictureSection()?.remove();
     }
-    //API call for this view
+    //API Fetch call for this view
     controlRandom = async function() {
         try {
             // get API data
             const data = await (0, _helpersJs.getJSON)((0, _configJs.API_RANDOM_GIF));
             // add gif structure into the page
             (0, _helpersJs.gifLoading)(this.pictureParentSection(), data);
-            // create a promise for the image to remove the loading screen only after the image is loaded
-            await Promise.all(Array.from(this.pictureSectionElements()).map(async (image)=>{
-                // get response from image loader checker function
-                await (0, _helpersJs.imageLoadChecker)(image);
-                // add class loaded if the promise fulfilled
-                image.closest(this.imageParent).classList.add("loaded");
-            }));
+            await (0, _helpersJs.promiseAllImage)(this.pictureSectionElements(), this.imageParent);
         } catch (err) {
+            //IMPORTANT
+            //:TODO CAN BE IMPROVED TO A SINGLE FUNCTION
+            //
             //return the error, err can be the image that didn't load from the promise all
-            if (err.nodeType) return (0, _helpersJs.errorLoading)(err, this.imageParent, `Image not found`);
-            (0, _helpersJs.errorLoading)(this.pictureParentSection(), this.imageParent, err.message);
+            console.error(err);
+            if (err.nodeType) return (0, _helpersJs.errorLoading)(err, `Image not found`, this.imageParent);
+            (0, _helpersJs.errorLoading)(this.pictureParentSection(), err.message);
         }
     };
 }
 exports.default = new RandomView();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../config.js":"6pDRM","../helpers.js":"luDvE"}]},["7age3","3cYfC"], "3cYfC", "parcelRequireb58f")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../config.js":"6pDRM","../helpers.js":"luDvE"}],"bLyxo":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _configJs = require("../config.js");
+var _helpersJs = require("../helpers.js");
+var _viewHelpersJs = require("./viewHelpers.js");
+class SearchView {
+    _parentElement = document.querySelector("section.search-section");
+    imageParent = ".search-section--picture-container";
+    formSearch = document.querySelector(".search-section--form");
+    formInputSearch = this.formSearch.querySelector("input#search");
+    formCTASearch = this.formSearch.querySelector(".btn");
+    searchResults = this._parentElement.querySelector(".search-section--results");
+    allImageParents = ()=>Array.from(document.querySelectorAll(this.imageParent));
+    //fetch search gif api
+    searchGif = async function(querySearch) {
+        try {
+            // get API data
+            const data = await (0, _helpersJs.getJSON)(`${(0, _configJs.API_SEARCH_GIF)}&q=${querySearch}`);
+            // if search didn't work it return the empty array
+            if (data.length === 0) throw new Error("Could not find any results");
+            // add data to page
+            data.forEach((data)=>this.searchResults.insertAdjacentHTML("beforeend", (0, _viewHelpersJs.singleGifContainer)(data)));
+            // check the image is loaded or not
+            this.allImageParents().forEach(async (container)=>{
+                try {
+                    await (0, _helpersJs.promiseAllImage)(container.querySelectorAll("picture *"), this.imageParent);
+                } catch (err) {
+                    (0, _helpersJs.errorLoading)(err, `Image not found`, this.imageParent);
+                }
+            });
+        } catch (err) {
+            (0, _helpersJs.errorLoading)(this.searchResults, err);
+        }
+    };
+    // click for when user search for
+    searchHandler = ()=>{
+        this.formCTASearch.addEventListener("click", (e)=>{
+            e.preventDefault();
+            const searchValue = this.formInputSearch;
+            this.searchResults.innerHTML = "";
+            this.searchGif(searchValue.value) //filter the value
+            ;
+            searchValue.value = "";
+        });
+    };
+}
+exports.default = new SearchView();
+
+},{"../config.js":"6pDRM","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./viewHelpers.js":"iA7j9","../helpers.js":"luDvE"}]},["7age3","3cYfC"], "3cYfC", "parcelRequireb58f")
 
 //# sourceMappingURL=index.b8fca702.js.map
