@@ -1,5 +1,4 @@
 import { gifError, gifStructure } from './views/viewHelpers'
-
 // This file contains all the functions that will be used multiple times
 
 /**
@@ -42,7 +41,7 @@ export const imageLoadChecker = imageElement => {
     })
 
     imageElement.addEventListener('error', function () {
-      reject(new Error(`Image not found`))
+      reject(this)
     })
   })
 }
@@ -64,8 +63,9 @@ export const gifLoading = (imageParentContainer, data) => {
  * @param {*} imageParentContainer -> parent of the picture element
  * @param {*} error -> error message to print
  */
-export const errorLoading = (imageParentContainer, error) => {
-  imageParentContainer.innerHTML = ''
-  imageParentContainer.insertAdjacentHTML('beforeend', gifError(error))
-  imageParentContainer.classList.add('error')
+export const errorLoading = (element, imageContainer, error) => {
+  element = element.closest(imageContainer) //had to do this cause element can be an image and i need the container of the picture/image checky tho
+  element.innerHTML = ''
+  element.insertAdjacentHTML('beforeend', gifError(error))
+  element.classList.add('error')
 }
