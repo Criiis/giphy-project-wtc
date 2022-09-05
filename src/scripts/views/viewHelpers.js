@@ -8,3 +8,6 @@ export const gifStructure = ({ title, images }) => `
 `
 
 export const gifError = message => `<p>Sorry, ${message}. Try again.</p>`
+
+export const singleGifContainer = data => `
+<div class="search-section--picture-container">${gifStructure(data)}</div>`
