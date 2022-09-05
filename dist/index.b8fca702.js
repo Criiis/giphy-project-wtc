@@ -541,11 +541,8 @@ var _randomViewJs = require("./views/randomView.js");
 var _randomViewJsDefault = parcelHelpers.interopDefault(_randomViewJs);
 var _viewHelpersJs = require("./views/viewHelpers.js");
 // import data from './mock.json'
-// console.log(data)
-// console.log('hello world')
 //Technical requirements
 // You are free to implement this application in your choice of frontend language, e.g. jQuery, React, etc. the assessment is more to ascertain how you are doing in frontend so far rather than checking your ability in a certain codebase.
-// For the data required to bring your application to life, please register for a free account on giphy.com, then review the documentation available here: https://developers.giphy.com/docs/api/endpoint
 // Please use your CSS knowledge to present the application nicely and bring it to life, but we’re not looking for a professional design here, just a user engaging and friendly experience (not an unstyled application). Please use some colour!
 // Delivery requirements
 // Once you have completed your mini project and you are happy for it to be reviewed, please ensure you include a readme file (if any steps required to run it) and commit the application to your GitHub – add the link to the task on the board for review. Alternative you could also ZIP up the package and attach it to the task on the board if GitHub isn’t an option for you.
@@ -559,55 +556,51 @@ var _viewHelpersJs = require("./views/viewHelpers.js");
 // Error handling is considered
 // Read me file on steps to run
 // Steps required to run the project locally
-//for random gif
-const controlRandom = async function() {
-    try {
-        // get API data
-        const data = await (0, _helpersJs.getJSON)((0, _configJs.API_RANDOM_GIF)) //TODO: @PARAM URL
-        ;
-        console.log(data);
-        (0, _helpersJs.gifLoading)((0, _randomViewJsDefault.default).pictureParentSection(), data) //TODO: @PARAM parent div of image
-        ;
-        // create a promise for the image to remove the loading screen only after the image is loaded
-        await Promise.all(Array.from((0, _randomViewJsDefault.default).pictureSectionElements()).map(async (image)=>{
-            // get response from image loader checker function
-            await (0, _helpersJs.imageLoadChecker)(image);
-            // add class loaded if the promise fulfilled
-            image.closest((0, _randomViewJsDefault.default).imageParent).classList.add("loaded");
-        }));
-    } catch (err) {
-        console.error(err);
-        (0, _helpersJs.errorLoading)((0, _randomViewJsDefault.default).pictureParentSection(), err.message);
-    }
-};
 //for search gif
-const searchRandom = async function() {
+const searchRandom = async function(querySearch) {
     try {
         // get API data
-        const data = await (0, _helpersJs.getJSON)(`${(0, _configJs.API_SEARCH_GIF)}&q=cats`);
+        const data = await (0, _helpersJs.getJSON)(`${(0, _configJs.API_SEARCH_GIF)}&q=${querySearch}`);
         console.log(data);
+        if (data.length === 0) throw new Error("Could not find any results, try again.");
         data.forEach(({ title , images  })=>document.querySelector(".search-section--results").insertAdjacentHTML("beforeend", `
+          <div class="search-section--picture-container">
         <picture class="">
-            <source type="image/webp" media="(max-width: 728px)" srcset="${images.fixed_height.webp}" /> 
-            <source type="image/webp" srcset="${images.original.webp}" />
-            <source media="(max-width: 728px)" srcset="${images.downsized.url}" />
-            <img src="${images.original.url}" alt="${title}" loading="lazy" />
+          <source type="image/webp" srcset="${images.preview_webp.url}" />
+          <img src="${images.preview_gif.url}" alt="${title}" loading="lazy" />
         </picture>
+        </div>
         `) //getting the smallest image possible instead of the big ones
         );
+        for(let i = 0; i < document.querySelectorAll(".search-section--picture-container").length; i++){
+            const container = document.querySelectorAll(".search-section--picture-container")[i];
+            console.log(container);
+            // console.log(container.querySelectorAll('picture *'))
+            Promise.all(Array.from(container.querySelectorAll("picture *")).map(async (image)=>{
+                // get response from image loader checker function
+                await (0, _helpersJs.imageLoadChecker)(image);
+                // add class loaded if the promise fulfilled
+                image.closest(".search-section--picture-container").classList.add("loaded");
+            }));
+        }
     } catch (err) {
         console.error(err);
     }
 };
 (function() {
-    controlRandom() // initialize the random gif
+    (0, _randomViewJsDefault.default).controlRandom() // initialize the random gif
     ;
-    (0, _randomViewJsDefault.default).reloadHandler(controlRandom) //add click event for "next" in random section
+    (0, _randomViewJsDefault.default).reloadHandler() //add click event for "next" in random section
     ;
-    //testing
-    searchRandom();
-//testing
-// searchRandom()
+    //add search functionality
+    document.querySelector(".search-section .search-section--form .btn").addEventListener("click", function(e) {
+        e.preventDefault();
+        const searchValue = document.querySelector(".search-section--form input#search");
+        document.querySelector(".search-section--results").innerHTML = "";
+        searchRandom(searchValue.value);
+        console.log(searchValue);
+        searchValue.value = "";
+    });
 })();
 
 },{"./config.js":"6pDRM","./helpers.js":"luDvE","./views/randomView.js":"9yuIi","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/viewHelpers.js":"iA7j9"}],"6pDRM":[function(require,module,exports) {
@@ -695,7 +688,7 @@ const imageLoadChecker = (imageElement)=>{
             resolve(this);
         });
         imageElement.addEventListener("error", function() {
-            reject(new Error(`Image not found`));
+            reject(this);
         });
     });
 };
@@ -705,10 +698,12 @@ const gifLoading = (imageParentContainer, data)=>{
     // create and insert the image element into HTML behind the loading container
     imageParentContainer.insertAdjacentHTML("beforeend", (0, _viewHelpers.gifStructure)(data));
 };
-const errorLoading = (imageParentContainer, error)=>{
-    imageParentContainer.innerHTML = "";
-    imageParentContainer.insertAdjacentHTML("beforeend", (0, _viewHelpers.gifError)(error));
-    imageParentContainer.classList.add("error");
+const errorLoading = (element, imageContainer, error)=>{
+    element = element.closest(imageContainer) //had to do this cause element can be an image and i need the container of the picture/image checky tho
+    ;
+    element.innerHTML = "";
+    element.insertAdjacentHTML("beforeend", (0, _viewHelpers.gifError)(error));
+    element.classList.add("error");
 };
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/viewHelpers":"iA7j9"}],"iA7j9":[function(require,module,exports) {
@@ -718,9 +713,9 @@ parcelHelpers.export(exports, "gifStructure", ()=>gifStructure);
 parcelHelpers.export(exports, "gifError", ()=>gifError);
 const gifStructure = ({ title , images  })=>`
 <picture class="random-section--picture">
-    <source type="image/webp" media="(max-width: 728px)" srcset="${images.fixed_height.webp}" /> 
+    <source type="image/webp" media="(max-width: 728px)" srcset="${images.preview_webp.url}}" /> 
     <source type="image/webp" srcset="${images.original.webp}" />
-    <source media="(max-width: 728px)" srcset="${images.downsized.url}" />
+    <source media="(max-width: 728px)" srcset="${images.preview_webp.url}" />
     <img src="${images.original.url}" alt="${title}" loading="lazy" />
 </picture>
 `;
@@ -729,6 +724,8 @@ const gifError = (message)=>`<p>Sorry, ${message}. Try again.</p>`;
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"9yuIi":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
+var _configJs = require("../config.js");
+var _helpersJs = require("../helpers.js");
 class RandomView {
     _parentElement = document.querySelector("section.random-section");
     imageParent = ".random-section--picture-container";
@@ -741,11 +738,11 @@ class RandomView {
     // shuffle button
     _shuffleCTA = this._parentElement.querySelector(".random-section--shuffle-gif");
     //reload functionality for CTA
-    reloadHandler(handler) {
+    reloadHandler() {
         this._shuffleCTA.addEventListener("click", ()=>{
             this._resetSection() //bind(this) wasn't working with a traditional function not sure why, so transformed this into arrow function :$
             ;
-            handler();
+            this.controlRandom();
         });
     }
     //reset section for random gif
@@ -753,9 +750,29 @@ class RandomView {
         this.pictureParentSection().classList.remove("loaded");
         this.pictureSection().remove();
     }
+    //API call for this view
+    controlRandom = async function() {
+        try {
+            // get API data
+            const data = await (0, _helpersJs.getJSON)((0, _configJs.API_RANDOM_GIF));
+            // add gif structure into the page
+            (0, _helpersJs.gifLoading)(this.pictureParentSection(), data);
+            // create a promise for the image to remove the loading screen only after the image is loaded
+            await Promise.all(Array.from(this.pictureSectionElements()).map(async (image)=>{
+                // get response from image loader checker function
+                await (0, _helpersJs.imageLoadChecker)(image);
+                // add class loaded if the promise fulfilled
+                image.closest(this.imageParent).classList.add("loaded");
+            }));
+        } catch (err) {
+            //return the error, err can be the image that didn't load from the promise all
+            if (err.nodeType) return (0, _helpersJs.errorLoading)(err, this.imageParent, `Image not found`);
+            (0, _helpersJs.errorLoading)(this.pictureParentSection(), this.imageParent, err.message);
+        }
+    };
 }
 exports.default = new RandomView();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["7age3","3cYfC"], "3cYfC", "parcelRequireb58f")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../config.js":"6pDRM","../helpers.js":"luDvE"}]},["7age3","3cYfC"], "3cYfC", "parcelRequireb58f")
 
 //# sourceMappingURL=index.b8fca702.js.map
