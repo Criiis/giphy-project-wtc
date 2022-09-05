@@ -1,7 +1,7 @@
 /**
  * where the magic will happen all the action will happen
  */
-import { API_RANDOM_GIF, API_SEARCH_GIF } from './config.js'
+import { API_SEARCH_GIF } from './config.js'
 import {
   errorLoading,
   getJSON,
@@ -12,13 +12,11 @@ import randomView from './views/randomView.js'
 import { gifStructure } from './views/viewHelpers.js'
 // import data from './mock.json'
 
-// console.log(data)
-// console.log('hello world')
 
 //Technical requirements
 
 // You are free to implement this application in your choice of frontend language, e.g. jQuery, React, etc. the assessment is more to ascertain how you are doing in frontend so far rather than checking your ability in a certain codebase.
-// For the data required to bring your application to life, please register for a free account on giphy.com, then review the documentation available here: https://developers.giphy.com/docs/api/endpoint
+
 // Please use your CSS knowledge to present the application nicely and bring it to life, but we’re not looking for a professional design here, just a user engaging and friendly experience (not an unstyled application). Please use some colour!
 
 // Delivery requirements
@@ -37,63 +35,76 @@ import { gifStructure } from './views/viewHelpers.js'
 // Read me file on steps to run
 // Steps required to run the project locally
 
-//for random gif
-const controlRandom = async function () {
-  try {
-    // get API data
-    const data = await getJSON(API_RANDOM_GIF) //TODO: @PARAM URL
-    console.log(data)
-
-    gifLoading(randomView.pictureParentSection(), data) //TODO: @PARAM parent div of image
-
-    // create a promise for the image to remove the loading screen only after the image is loaded
-    await Promise.all(
-      Array.from(randomView.pictureSectionElements()).map(async image => {
-        // get response from image loader checker function
-        await imageLoadChecker(image)
-        // add class loaded if the promise fulfilled
-        image.closest(randomView.imageParent).classList.add('loaded')
-      })
-    )
-  } catch (err) {
-    console.error(err)
-    errorLoading(randomView.pictureParentSection(), err.message)
-  }
-}
 
 //for search gif
-const searchRandom = async function () {
+const searchRandom = async function (querySearch) {
   try {
     // get API data
-    const data = await getJSON(`${API_SEARCH_GIF}&q=cats`)
+    const data = await getJSON(`${API_SEARCH_GIF}&q=${querySearch}`)
     console.log(data)
+    if (data.length === 0)
+      throw new Error('Could not find any results, try again.')
 
     data.forEach(
       ({ title, images }) =>
         document.querySelector('.search-section--results').insertAdjacentHTML(
           'beforeend',
           `
+          <div class="search-section--picture-container">
         <picture class="">
-            <source type="image/webp" media="(max-width: 728px)" srcset="${images.fixed_height.webp}" /> 
-            <source type="image/webp" srcset="${images.original.webp}" />
-            <source media="(max-width: 728px)" srcset="${images.downsized.url}" />
-            <img src="${images.original.url}" alt="${title}" loading="lazy" />
+          <source type="image/webp" srcset="${images.preview_webp.url}" />
+          <img src="${images.preview_gif.url}" alt="${title}" loading="lazy" />
         </picture>
+        </div>
         `
         ) //getting the smallest image possible instead of the big ones
     )
+
+    for (
+      let i = 0;
+      i <
+      document.querySelectorAll('.search-section--picture-container').length;
+      i++
+    ) {
+      const container = document.querySelectorAll(
+        '.search-section--picture-container'
+      )[i]
+      console.log(container)
+      // console.log(container.querySelectorAll('picture *'))
+
+      Promise.all(
+        Array.from(container.querySelectorAll('picture *')).map(async image => {
+          // get response from image loader checker function
+          await imageLoadChecker(image)
+          // add class loaded if the promise fulfilled
+          image
+            .closest('.search-section--picture-container')
+            .classList.add('loaded')
+        })
+      )
+    }
   } catch (err) {
     console.error(err)
   }
 }
 
+
 ;(function () {
-  controlRandom() // initialize the random gif
-  randomView.reloadHandler(controlRandom) //add click event for "next" in random section
+  randomView.controlRandom() // initialize the random gif
+  randomView.reloadHandler() //add click event for "next" in random section
 
-  //testing
-  searchRandom()
+  //add search functionality
+  document
+    .querySelector('.search-section .search-section--form .btn')
+    .addEventListener('click', function (e) {
+      e.preventDefault()
+      const searchValue = document.querySelector(
+        '.search-section--form input#search'
+      )
 
-  //testing
-  // searchRandom()
+      document.querySelector('.search-section--results').innerHTML = ''
+      searchRandom(searchValue.value)
+      console.log(searchValue)
+      searchValue.value = ''
+    })
 })()
