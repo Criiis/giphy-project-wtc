@@ -29,6 +29,38 @@
       grid-template-columns: repeat(4, 1fr);
     }
   }
+
+  &--picture-container {
+    width: 100%;
+    min-height: 20rem;
+    background-color: #d9d9d9;
+    position: relative;
+
+    &:before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: #d9d9d9;
+      background-image: linear-gradient(
+        to right,
+        #d9d9d9 0%,
+        #888b94 20%,
+        #d9d9d9 40%,
+        #d9d9d9 100%
+      );
+      z-index: 1;
+      background-repeat: no-repeat;
+      animation: shimmer 2s linear infinite;
+    }
+    &.loaded {
+      @extend %loaded;
+    }
+    &.error {
+      @extend %error;
+    }
+  }
+
   picture * {
     width: 100%;
   }

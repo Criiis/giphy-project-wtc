@@ -20,6 +20,8 @@ body {
 
 .main-content {
   padding: var(--small-general-padding);
+  min-height: calc(100vh - 7rem);
+
   @include media('min-desktop') {
     display: grid;
     grid-template-columns: 48rem calc(100% - 48rem);
