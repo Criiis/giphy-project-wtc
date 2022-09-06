@@ -5,20 +5,24 @@ import { errorLoading, getJSON, promiseAllImage } from '../helpers.js'
  * @param { title, images } -> data from the API
  * @returns template literals with the picture
  */
-export const gifStructure = ({ title, images }) => `
+export const gifStructure = ({ title, images }) => {
+  const gifDescription = title === '' ? 'unknown gif' : title
+  return `
 <picture>
-    <source type="image/webp" media="(max-width: 728px)" srcset="${images.preview_webp.url}" /> 
-    <source type="image/webp" srcset="${images.original.webp}" />
-    <source media="(max-width: 728px)" srcset="${images.preview_webp.url}" />
-    <img src="${images.original.url}" alt="${title}" loading="lazy" />
+    <source type="image/webp" media="(max-width: 728px)" srcset="${images.preview_webp.url}"/> 
+    <source type="image/webp" srcset="${images.original.webp}"/>
+    <source media="(max-width: 728px)" srcset="${images.preview_webp.url}"/>
+    <img src="${images.original.url}" alt="${gifDescription}" loading="lazy" />
 </picture>
 `
+}
 /**
  *
  * @param {*} message -> error
  * @returns template literals with the error
  */
-export const gifError = message => `<p>Sorry, ${message}. Try again.</p>`
+export const gifError = message =>
+  `<p class="error">Sorry, ${message}. Try again.</p>`
 
 /**
  *
@@ -41,6 +45,9 @@ export default class GeneralView {
       // get API data
       const data = await getJSON(url)
       if (data.length === 0) throw new Error('Could not find any results')
+
+      //remove error from result div
+      this._resultContainer.classList.remove('error')
 
       //apply the each gif to the page
       data.forEach(gif =>
