@@ -542,6 +542,43 @@ var _randomViewJsDefault = parcelHelpers.interopDefault(_randomViewJs);
 var _searchViewJs = require("./views/searchView.js");
 var _searchViewJsDefault = parcelHelpers.interopDefault(_searchViewJs);
 var _viewHelpersJs = require("./views/viewHelpers.js");
+// import data from './mock.json'
+//Technical requirements
+// You are free to implement this application in your choice of frontend language, e.g. jQuery, React, etc. the assessment is more to ascertain how you are doing in frontend so far rather than checking your ability in a certain codebase.
+// Please use your CSS knowledge to present the application nicely and bring it to life, but we’re not looking for a professional design here, just a user engaging and friendly experience (not an unstyled application). Please use some colour!
+// Delivery requirements
+// Once you have completed your mini project and you are happy for it to be reviewed, please ensure you include a readme file (if any steps required to run it) and commit the application to your GitHub – add the link to the task on the board for review. Alternative you could also ZIP up the package and attach it to the task on the board if GitHub isn’t an option for you.
+// You should allocate 3 days to this task.
+// Acceptance Criteria
+// HTML is valid W3C standard
+// CSS class names use BEM
+// The CSS is mobile first and responsive
+// There is validation for a blank search
+// Loading time is considered
+// Error handling is considered
+// Read me file on steps to run
+// Steps required to run the project locally
+const trendingFetch = async function() {
+    try {
+        // get API data
+        const data = await (0, _helpersJs.getJSON)((0, _configJs.API_TRENDING_GIF));
+        console.log(data);
+        data.forEach((data)=>document.querySelector(".trending-section--results").insertAdjacentHTML("beforeend", (0, _viewHelpersJs.singleGifContainer)(data)));
+        // check the image is loaded or not
+        Array.from(document.querySelectorAll(".trending-section--results .search-section--picture-container")).forEach(async (container)=>{
+            try {
+                console.log(container);
+                await (0, _helpersJs.promiseAllImage)(container.querySelectorAll("picture *"), ".search-section--picture-container");
+            } catch (err) {
+                (0, _helpersJs.errorLoading)(err, `Image not found`, ".search-section--picture-container");
+                console.error(err);
+            }
+        });
+    } catch (err) {
+        console.log(err);
+        (0, _helpersJs.errorLoading)(document.querySelector(".trending-section--results"), err);
+    }
+};
 (function() {
     (0, _randomViewJsDefault.default).controlRandom() // initialize the random gif
     ;
@@ -549,6 +586,7 @@ var _viewHelpersJs = require("./views/viewHelpers.js");
     ;
     //add search functionality
     (0, _searchViewJsDefault.default).searchHandler();
+// trendingFetch()
 })();
 
 },{"./config.js":"6pDRM","./helpers.js":"luDvE","./views/randomView.js":"9yuIi","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/searchView.js":"bLyxo","./views/viewHelpers.js":"iA7j9"}],"6pDRM":[function(require,module,exports) {
@@ -562,14 +600,11 @@ parcelHelpers.export(exports, "API_SEARCH_GIF", ()=>API_SEARCH_GIF);
 const API_URL = "https://api.giphy.com/v1/gifs/";
 const API_TOKEN = "XSRthheAmTaIEIj4hLXVcyseFf4ME5Aa";
 const API_RANDOM_GIF = `${API_URL}random?api_key=${API_TOKEN}&lang=en&rating=g`;
-const API_TRENDING_GIF = `${API_URL}trending?api_key=${API_TOKEN}`;
+const API_TRENDING_GIF = `${API_URL}trending?api_key=${API_TOKEN}&lang=en&rating=g&limit=10`;
 const API_SEARCH_GIF = `${API_URL}search?api_key=${API_TOKEN}`;
 // RANDOM -> `${API_RANDOM_GIF}`
 // TRENDING -> `${API_TRENDING_GIF}`
 // SEARCH -> `${API_SEARCH_GIF}&q=cheeseburgers`
-// https://api.giphy.com/v1/gifs/search?api_key=XSRthheAmTaIEIj4hLXVcyseFf4ME5Aa&q=cheeseburgers
-// https://api.giphy.com/v1/gifs/search?api_key=XSRthheAmTaIEIj4hLXVcyseFf4ME5Aa&q:cheeseburgers
-// https://api.giphy.com/v1/gifs/search?api_key=XSRthheAmTaIEIj4hLXVcyseFf4ME5Aa&q:cheeseburgers&q:cheeseburgers
 console.log(API_RANDOM_GIF);
 console.log(API_TRENDING_GIF);
 console.log(`${API_SEARCH_GIF}&q=cheeseburgers`);
@@ -650,6 +685,7 @@ const promiseAllImage = async (pictureChild, pictureParent)=>{
             image.closest(pictureParent)?.classList.add("loaded");
         }));
     } catch (error) {
+        console.error(error);
         throw error;
     }
 };
@@ -662,7 +698,6 @@ const gifLoading = (imageParentContainer, data)=>{
 const errorLoading = (element, error, imageContainer)=>{
     element = imageContainer ? element.closest(imageContainer) : element //had to do this cause element can be an image and i need the container of the picture/image checky tho
     ;
-    console.log(element);
     element.innerHTML = "";
     element.insertAdjacentHTML("beforeend", (0, _viewHelpers.gifError)(error));
     element.classList.add("error");
@@ -675,8 +710,8 @@ parcelHelpers.export(exports, "gifStructure", ()=>gifStructure);
 parcelHelpers.export(exports, "gifError", ()=>gifError);
 parcelHelpers.export(exports, "singleGifContainer", ()=>singleGifContainer);
 const gifStructure = ({ title , images  })=>`
-<picture class="random-section--picture">
-    <source type="image/webp" media="(max-width: 728px)" srcset="${images.preview_webp.url}}" /> 
+<picture>
+    <source type="image/webp" media="(max-width: 728px)" srcset="${images.preview_webp.url}" /> 
     <source type="image/webp" srcset="${images.original.webp}" />
     <source media="(max-width: 728px)" srcset="${images.preview_webp.url}" />
     <img src="${images.original.url}" alt="${title}" loading="lazy" />
@@ -684,7 +719,7 @@ const gifStructure = ({ title , images  })=>`
 `;
 const gifError = (message)=>`<p>Sorry, ${message}. Try again.</p>`;
 const singleGifContainer = (data)=>`
-<div class="search-section--picture-container">${gifStructure(data)}</div>`;
+<div class="search-gif-container__picture-container">${gifStructure(data)}</div>`;
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"9yuIi":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -692,47 +727,49 @@ parcelHelpers.defineInteropFlag(exports);
 var _configJs = require("../config.js");
 var _helpersJs = require("../helpers.js");
 class RandomView {
-    _parentElement = document.querySelector("section.random-section");
-    imageParent = ".random-section--picture-container";
+    _sectionName = "random-gif-container";
+    _imageParent = `.${this._sectionName}__picture-container`;
+    _parentElement = document.querySelector(`section.${this._sectionName}`);
     // picture container -> this will be very important element as it is the one with loading screen
-    pictureParentSection = ()=>this._parentElement.querySelector(this.imageParent);
+    _pictureParentSection = ()=>this._parentElement.querySelector(this._imageParent);
     // picture element
-    pictureSection = ()=>this.pictureParentSection().querySelector("picture");
+    _pictureSection = ()=>this._pictureParentSection().querySelector("picture");
     // all elements inside the picture
-    pictureSectionElements = ()=>this.pictureSection().querySelectorAll("*");
+    _pictureSectionElements = ()=>this._pictureSection().querySelectorAll("*");
     // shuffle button
-    _shuffleCTA = this._parentElement.querySelector(".random-section--shuffle-gif");
-    //reload functionality for CTA
-    reloadHandler() {
-        this._shuffleCTA.addEventListener("click", ()=>{
-            this._resetSection() //bind(this) wasn't working with a traditional function not sure why, so transformed this into arrow function :$
-            ;
-            this.controlRandom();
-        });
-    }
-    //reset section for random gif
-    _resetSection() {
-        this.pictureParentSection()?.classList.remove("loaded");
-        this.pictureSection()?.remove();
-    }
+    _shuffleCTA = this._parentElement.querySelector(`.${this._sectionName}__shuffle-gif`);
     //API Fetch call for this view
     controlRandom = async function() {
         try {
             // get API data
             const data = await (0, _helpersJs.getJSON)((0, _configJs.API_RANDOM_GIF));
             // add gif structure into the page
-            (0, _helpersJs.gifLoading)(this.pictureParentSection(), data);
-            await (0, _helpersJs.promiseAllImage)(this.pictureSectionElements(), this.imageParent);
+            (0, _helpersJs.gifLoading)(this._pictureParentSection(), data);
+            // await and remove the loading screen when gif is loaded
+            await (0, _helpersJs.promiseAllImage)(this._pictureSectionElements(), this._imageParent);
         } catch (err) {
-            //IMPORTANT
-            //:TODO CAN BE IMPROVED TO A SINGLE FUNCTION
-            //
-            //return the error, err can be the image that didn't load from the promise all
-            console.error(err);
-            if (err.nodeType) return (0, _helpersJs.errorLoading)(err, `Image not found`, this.imageParent);
-            (0, _helpersJs.errorLoading)(this.pictureParentSection(), err.message);
+            this._errorHandler(err);
         }
     };
+    //handel the error for the async function
+    _errorHandler(err) {
+        console.error(err);
+        if (err.nodeType) return (0, _helpersJs.errorLoading)(err, `Image not found`, this._imageParent);
+        (0, _helpersJs.errorLoading)(this._pictureParentSection(), err.message);
+    }
+    //reset section for random gif
+    _resetSection() {
+        this._pictureParentSection()?.classList.remove("loaded", "error");
+        this._pictureSection()?.remove();
+    }
+    //reload functionality for CTA
+    reloadHandler() {
+        this._shuffleCTA.addEventListener("click", ()=>{
+            this._resetSection() //bind(this) wasn't working with a traditional function, not sure why, so transformed this into arrow function and this keyword is related to the parent
+            ;
+            this.controlRandom();
+        });
+    }
 }
 exports.default = new RandomView();
 
@@ -743,13 +780,16 @@ var _configJs = require("../config.js");
 var _helpersJs = require("../helpers.js");
 var _viewHelpersJs = require("./viewHelpers.js");
 class SearchView {
-    _parentElement = document.querySelector("section.search-section");
-    imageParent = ".search-section--picture-container";
-    formSearch = document.querySelector(".search-section--form");
-    formInputSearch = this.formSearch.querySelector("input#search");
-    formCTASearch = this.formSearch.querySelector(".btn");
-    searchResults = this._parentElement.querySelector(".search-section--results");
-    allImageParents = ()=>Array.from(document.querySelectorAll(this.imageParent));
+    _sectionName = "search-gif-container";
+    _imageParent = `.${this._sectionName}__picture-container`;
+    _parentElement = document.querySelector(`section.${this._sectionName}`);
+    //search input
+    _formInputSearch = this._parentElement.querySelector(`.${this._sectionName}__search-input`);
+    //search button
+    _formCTASearch = this._parentElement.querySelector(`.${this._sectionName}__search-btn`);
+    //search results container
+    _searchResults = this._parentElement.querySelector(`.${this._sectionName}__results`);
+    _allImageParents = ()=>Array.from(document.querySelectorAll(this._imageParent));
     //fetch search gif api
     searchGif = async function(querySearch) {
         try {
@@ -758,25 +798,27 @@ class SearchView {
             // if search didn't work it return the empty array
             if (data.length === 0) throw new Error("Could not find any results");
             // add data to page
-            data.forEach((data)=>this.searchResults.insertAdjacentHTML("beforeend", (0, _viewHelpersJs.singleGifContainer)(data)));
+            data.forEach((data)=>this._searchResults.insertAdjacentHTML("beforeend", (0, _viewHelpersJs.singleGifContainer)(data)));
             // check the image is loaded or not
-            this.allImageParents().forEach(async (container)=>{
+            this._allImageParents().forEach(async (container)=>{
                 try {
-                    await (0, _helpersJs.promiseAllImage)(container.querySelectorAll("picture *"), this.imageParent);
+                    await (0, _helpersJs.promiseAllImage)(container.querySelectorAll("picture *"), this._imageParent);
                 } catch (err) {
-                    (0, _helpersJs.errorLoading)(err, `Image not found`, this.imageParent);
+                    console.error(err);
+                    (0, _helpersJs.errorLoading)(err, `Image not found`, this._imageParent);
                 }
             });
         } catch (err) {
-            (0, _helpersJs.errorLoading)(this.searchResults, err);
+            console.error(err);
+            (0, _helpersJs.errorLoading)(this._searchResults, err);
         }
     };
     // click for when user search for
     searchHandler = ()=>{
-        this.formCTASearch.addEventListener("click", (e)=>{
+        this._formCTASearch.addEventListener("click", (e)=>{
             e.preventDefault();
-            const searchValue = this.formInputSearch;
-            this.searchResults.innerHTML = "";
+            const searchValue = this._formInputSearch;
+            this._searchResults.innerHTML = "";
             this.searchGif(searchValue.value) //filter the value
             ;
             searchValue.value = "";
