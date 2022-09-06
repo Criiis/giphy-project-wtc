@@ -25,7 +25,8 @@
     </header>
     <!-- nav items -->
     <nav class="nav">
-        <a href="#" class="nav__item" aria-label="open random gif section">
+        <a href="#" class="nav__item nav__item--active" data-section="random-gif-container"
+            aria-label="open random gif section">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                 aria-hidden="true" focusable="false">
                 <path
@@ -38,7 +39,7 @@
                     stroke-linejoin="round" />
             </svg>
         </a>
-        <a href="#" class="nav__item" aria-label="open search gif section">
+        <a href="#" class="nav__item" data-section="search-gif-container" aria-label="open search gif section">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                 aria-hidden="true" focusable="false">
                 <path
@@ -48,7 +49,7 @@
                     stroke-linejoin="round" />
             </svg>
         </a>
-        <a href="#" class="nav__item" aria-label="open trending gifs section">
+        <a href="#" class="nav__item" data-section="trending-gif-container" aria-label="open trending gifs section">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                 aria-hidden="true" focusable="false">
                 <path
@@ -60,7 +61,7 @@
     <!-- content section -->
     <main class="main-content" aria-label="content">
         <!-- random gif section -->
-        <section class="random-gif-container" aria-label="Random gif">
+        <section class="random-gif-container section section--active" aria-label="Random gif">
             <h2 class="heading-1">Random</h2>
             <div class="random-gif-container__picture-container"></div>
 
@@ -86,7 +87,7 @@
             </button>
         </section>
         <!-- search gif section -->
-        <section class="search-gif-container" aria-label="Search for a gif">
+        <section class="search-gif-container section" aria-label="Search for a gif">
             <h2 class="heading-1">Finder</h2>
 
             <form action="" class="search-gif-container__form">
@@ -108,7 +109,7 @@
             <div class="search-gif-container__results"></div>
         </section>
         <!-- trending gif section -->
-        <section class="trending-gif-container" aria-label="Trending gifs">
+        <section class="trending-gif-container section" aria-label="Trending gifs">
             <h2 class="heading-1">Trending</h2>
             <div class="trending-gif-container__results"></div>
         </section>
