@@ -1,7 +1,7 @@
 %pictureContainer {
   width: 100%;
   min-height: 20rem;
-  background-color: #d9d9d9;
+  background-color: #2e2e2e;
   position: relative;
 
   &:before {
@@ -9,13 +9,13 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: #d9d9d9;
+    background-color: #2e2e2e;
     background-image: linear-gradient(
       to right,
-      #d9d9d9 0%,
+      #2e2e2e 0%,
       #888b94 20%,
-      #d9d9d9 40%,
-      #d9d9d9 100%
+      #2e2e2e 40%,
+      #2e2e2e 100%
     );
     z-index: 1;
     background-repeat: no-repeat;
@@ -30,9 +30,12 @@
     }
   }
   &.error {
-    > p {
-      color: red;
-    }
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    flex-direction: column;
     &::before {
       animation-play-state: paused;
       display: none;
@@ -56,4 +59,10 @@
   svg {
     margin-right: 0.5rem;
   }
+}
+
+p.error {
+  font-size: 1.4rem;
+  color: red;
+  text-align: center;
 }

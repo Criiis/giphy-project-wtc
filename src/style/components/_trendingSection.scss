@@ -6,5 +6,6 @@
 
   &__picture-container {
     @extend %pictureContainer;
+    margin-bottom: 1.5rem;
   }
 }

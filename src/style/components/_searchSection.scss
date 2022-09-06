@@ -15,7 +15,7 @@
   &__label-input {
     font-size: 1.4rem;
   }
-  
+
   &__search-input {
     width: 100%;
     padding: 1.2rem;
@@ -29,6 +29,10 @@
     grid-gap: 1.5rem;
     @include media('min-desktop') {
       grid-template-columns: repeat(4, 1fr);
+    }
+
+    &.error {
+      display: block;
     }
   }
 
