@@ -8,11 +8,11 @@ import {
 
 class RandomView {
   _sectionName = 'random-gif-container'
-  _imageParent = `.${this._sectionName}__picture-container`
+  _pictureParent = `.${this._sectionName}__picture-container`
   _parentElement = document.querySelector(`section.${this._sectionName}`)
   // picture container -> this will be very important element as it is the one with loading screen
   _pictureParentSection = () =>
-    this._parentElement.querySelector(this._imageParent)
+    this._parentElement.querySelector(this._pictureParent)
   // picture element
   _pictureSection = () => this._pictureParentSection().querySelector('picture')
   // all elements inside the picture
@@ -30,7 +30,7 @@ class RandomView {
       // add gif structure into the page
       gifLoading(this._pictureParentSection(), data)
       // await and remove the loading screen when gif is loaded
-      await promiseAllImage(this._pictureSectionElements(), this._imageParent)
+      await promiseAllImage(this._pictureSectionElements(), this._pictureParent)
     } catch (err) {
       this._errorHandler(err)
     }
@@ -40,7 +40,7 @@ class RandomView {
   _errorHandler(err) {
     console.error(err)
     if (err.nodeType)
-      return errorLoading(err, `Image not found`, this._imageParent)
+      return errorLoading(err, `Image not found`, this._pictureParent)
     errorLoading(this._pictureParentSection(), err.message)
   }
 

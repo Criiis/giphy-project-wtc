@@ -75,14 +75,14 @@ picture, picture * {
   width: 100%;
 }
 
-.trending-section--picture-container, .search-gif-container__picture-container, .random-gif-container__picture-container {
+.trending-gif-container__picture-container, .search-gif-container__picture-container, .random-gif-container__picture-container {
   width: 100%;
   min-height: 20rem;
   background-color: #d9d9d9;
   position: relative;
 }
 
-.trending-section--picture-container:before, .search-gif-container__picture-container:before, .random-gif-container__picture-container:before {
+.trending-gif-container__picture-container:before, .search-gif-container__picture-container:before, .random-gif-container__picture-container:before {
   content: "";
   width: 100%;
   height: 100%;
@@ -94,21 +94,21 @@ picture, picture * {
   position: absolute;
 }
 
-.loaded.trending-section--picture-container, .loaded.search-gif-container__picture-container, .loaded.random-gif-container__picture-container {
+.loaded.trending-gif-container__picture-container, .loaded.search-gif-container__picture-container, .loaded.random-gif-container__picture-container {
   min-height: auto;
   background-color: #0000;
 }
 
-.loaded.trending-section--picture-container:before, .loaded.search-gif-container__picture-container:before, .loaded.random-gif-container__picture-container:before {
+.loaded.trending-gif-container__picture-container:before, .loaded.search-gif-container__picture-container:before, .loaded.random-gif-container__picture-container:before {
   animation-play-state: paused;
   display: none;
 }
 
-.error.trending-section--picture-container > p, .error.search-gif-container__picture-container > p, .error.random-gif-container__picture-container > p {
+.error.trending-gif-container__picture-container > p, .error.search-gif-container__picture-container > p, .error.random-gif-container__picture-container > p {
   color: red;
 }
 
-.error.trending-section--picture-container:before, .error.search-gif-container__picture-container:before, .error.random-gif-container__picture-container:before {
+.error.trending-gif-container__picture-container:before, .error.search-gif-container__picture-container:before, .error.random-gif-container__picture-container:before {
   animation-play-state: paused;
   display: none;
 }
@@ -221,7 +221,7 @@ header h1 {
   }
 }
 
-.trending-section h2 {
+.trending-gif-container h2 {
   margin-top: 0;
   margin-bottom: 1.5rem;
 }
