@@ -25,7 +25,7 @@
     </header>
 
     <!-- nav items -->
-    <nav class="list--reset nav">
+    <nav class="nav">
         <a href="#" class="nav__item" aria-label="open random gif section">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                 aria-hidden="true" focusable="false">
@@ -57,25 +57,17 @@
                     stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
         </a>
-        <!-- <a href="#" class="nav__item" aria-label="open favorites gifs section">
-            <svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-                <path
-                    d="M17.2891 0.431705C15.4939 0.431705 13.8026 1.13395 12.5316 2.40492L12.0074 2.92913L11.4733 2.39503C10.2023 1.12406 8.51102 0.421814 6.71585 0.421814C4.92561 0.421814 3.23923 1.11911 1.96827 2.39008C0.697301 3.66105 0 5.34743 0 7.14261C0 8.93778 0.702246 10.6242 1.97321 11.8951L11.3942 21.3161L11.414 21.3359C11.5772 21.4991 11.7948 21.5782 12.0074 21.5782C12.225 21.5782 12.4426 21.4941 12.6058 21.3309L22.0268 11.91C23.2978 10.639 24 8.95262 24 7.15744C24 5.36226 23.3027 3.67094 22.0317 2.40492C20.7657 1.12901 19.0793 0.431705 17.2891 0.431705ZM20.83 10.7082L12.0124 19.5308L3.17494 10.6934C2.22543 9.74388 1.70122 8.48281 1.69627 7.13766C1.69627 5.79746 2.21554 4.53638 3.16505 3.58687C4.11457 2.6423 5.37564 2.11808 6.7109 2.11808C8.05605 2.11808 9.31712 2.6423 10.2716 3.59676L11.4041 4.72925C11.7206 5.04576 12.2844 5.04576 12.6058 4.72925L13.7334 3.6017C14.6829 2.65219 15.9489 2.12798 17.2891 2.12798C18.6293 2.12798 19.8904 2.65219 20.8399 3.6017C21.7894 4.55122 22.3136 5.81229 22.3087 7.15744C22.3087 8.49764 21.7845 9.75872 20.83 10.7082Z"
-                    fill="#111111" />
-            </svg>
-        </a> -->
     </nav>
 
     <!-- content section -->
     <main class="main-content">
 
         <!-- random gif section -->
-        <section class="random-section">
+        <section class="random-gif-container">
             <h2 class="heading-1">Random</h2>
-            <div class="random-section--picture-container">
-            </div>
+            <div class="random-gif-container__picture-container"></div>
 
-            <button class="btn random-section--shuffle-gif" aria-label="shuffle Gif">
+            <button class="btn random-gif-container__shuffle-gif" aria-label="shuffle Gif">
                 <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                     aria-hidden="true" focusable="false">
                     <g clip-path="url(#clip0_38_1324)">
@@ -97,15 +89,15 @@
             </button>
         </section>
 
-
-        <section class="search-section">
+        <!-- search gif section -->
+        <section class="search-gif-container">
             <h2 class="heading-1">Finder</h2>
 
-            <form action="" class="search-section--form">
-                <label for="search">search from a GIPHY</label><br />
-                <input type="text" id="search" name="search"><br />
+            <form action="" class="search-gif-container__form">
+                <label for="search" class="search-gif-container__label-input">search from a GIPHY</label><br />
+                <input type="text" id="search" name="search gif" class="search-gif-container__search-input"><br />
 
-                <button class="btn">
+                <button class="btn search-gif-container__search-btn">
                     <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                         aria-hidden="true" focusable="false">
                         <path
@@ -117,7 +109,13 @@
                     Search</button>
             </form>
 
-            <div class="search-section--results"></div>
+            <div class="search-gif-container__results"></div>
+        </section>
+
+
+        <section class="trending-section">
+            <h2 class="heading-1">Trending</h2>
+            <div class="trending-section--results"></div>
         </section>
 
 
