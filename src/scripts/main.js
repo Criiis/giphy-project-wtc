@@ -7,6 +7,30 @@ import randomView from './views/randomView.js'
 import searchView from './views/searchView.js'
 import trendingView from './views/trendingView.js'
 
+//review and optimize this
+document.querySelector('.nav').addEventListener('click', function (e) {
+  e.preventDefault()
+  const button = e.target.closest('.nav__item')
+  const dataSection = button.dataset.section
+  const navActivateClass = 'section--active'
+  const sectionActivateClass = 'section--active'
+
+  // const 
+
+  Array.from(document.querySelectorAll('.nav__item')).forEach(el =>
+    el.classList.remove(navActivateClass)
+  )
+
+  button.classList.add(navActivateClass)
+
+  Array.from(document.querySelectorAll('.section')).forEach(el =>
+    el.classList.remove(sectionActivateClass)
+  )
+
+  document.querySelector(`.${dataSection}`).classList.add(sectionActivateClass)
+})
+
+//init all functionality
 ;(function () {
   // initialize the random gif
   randomView.controlRandom()

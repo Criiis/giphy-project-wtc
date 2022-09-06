@@ -542,6 +542,19 @@ var _searchViewJs = require("./views/searchView.js");
 var _searchViewJsDefault = parcelHelpers.interopDefault(_searchViewJs);
 var _trendingViewJs = require("./views/trendingView.js");
 var _trendingViewJsDefault = parcelHelpers.interopDefault(_trendingViewJs);
+//review and optimize this
+document.querySelector(".nav").addEventListener("click", function(e) {
+    e.preventDefault();
+    const button = e.target.closest(".nav__item");
+    const dataSection = button.dataset.section;
+    const navActivateClass = "section--active";
+    const sectionActivateClass = "section--active";
+    // const 
+    Array.from(document.querySelectorAll(".nav__item")).forEach((el)=>el.classList.remove(navActivateClass));
+    button.classList.add(navActivateClass);
+    Array.from(document.querySelectorAll(".section")).forEach((el)=>el.classList.remove(sectionActivateClass));
+    document.querySelector(`.${dataSection}`).classList.add(sectionActivateClass);
+});
 (function() {
     // initialize the random gif
     (0, _randomViewJsDefault.default).controlRandom();
