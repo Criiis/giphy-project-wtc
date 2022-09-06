@@ -47,10 +47,9 @@ export const imageLoadChecker = imageElement => {
 }
 
 /**
- *
- * @param {*} pictureChild
- * @param {*} pictureParent
- * @returns
+ * will return a fulfilled or rejected promise for all once the one of the images inside of the picture is loaded
+ * @param {*} pictureChild -> all childs of the picture element
+ * @param {*} pictureParent -> the string to find the closest element of the image loaded for example -> '.random-gif-container__picture-container'
  */
 export const promiseAllImage = async (pictureChild, pictureParent) => {
   try {

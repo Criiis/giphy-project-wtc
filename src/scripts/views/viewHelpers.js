@@ -1,5 +1,10 @@
 import { errorLoading, getJSON, promiseAllImage } from '../helpers.js'
 
+/**
+ *
+ * @param { title, images } -> data from the API
+ * @returns template literals with the picture
+ */
 export const gifStructure = ({ title, images }) => `
 <picture>
     <source type="image/webp" media="(max-width: 728px)" srcset="${images.preview_webp.url}" /> 
@@ -8,15 +13,23 @@ export const gifStructure = ({ title, images }) => `
     <img src="${images.original.url}" alt="${title}" loading="lazy" />
 </picture>
 `
-
+/**
+ *
+ * @param {*} message -> error
+ * @returns template literals with the error
+ */
 export const gifError = message => `<p>Sorry, ${message}. Try again.</p>`
 
+/**
+ *
+ * @param {*} data -> data from the API
+ * @param {*} section -> section where the picture container will sit
+ * @returns template literals with the picture + container
+ */
 export const singleGifContainer = (data, section = 'search-gif-container') => `
 <div class="${
   section === 'search-gif-container' ? section : 'trending-gif-container'
 }__picture-container">${gifStructure(data)}</div>`
-
-
 
 /**
  * create general view to hold the parent class with the fetch function for trending and finder section
