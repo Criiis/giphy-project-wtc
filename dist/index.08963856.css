@@ -78,7 +78,7 @@ picture, picture * {
 .trending-gif-container__picture-container, .search-gif-container__picture-container, .random-gif-container__picture-container {
   width: 100%;
   min-height: 20rem;
-  background-color: #d9d9d9;
+  background-color: #2e2e2e;
   position: relative;
 }
 
@@ -87,8 +87,8 @@ picture, picture * {
   width: 100%;
   height: 100%;
   z-index: 1;
-  background-color: #d9d9d9;
-  background-image: linear-gradient(to right, #d9d9d9 0%, #888b94 20%, #d9d9d9 40% 100%);
+  background-color: #2e2e2e;
+  background-image: linear-gradient(to right, #2e2e2e 0%, #888b94 20%, #2e2e2e 40% 100%);
   background-repeat: no-repeat;
   animation: shimmer 2s linear infinite;
   position: absolute;
@@ -104,8 +104,11 @@ picture, picture * {
   display: none;
 }
 
-.error.trending-gif-container__picture-container > p, .error.search-gif-container__picture-container > p, .error.random-gif-container__picture-container > p {
-  color: red;
+.error.trending-gif-container__picture-container, .error.search-gif-container__picture-container, .error.random-gif-container__picture-container {
+  flex-flow: column;
+  place-content: center;
+  align-items: center;
+  display: flex;
 }
 
 .error.trending-gif-container__picture-container:before, .error.search-gif-container__picture-container:before, .error.random-gif-container__picture-container:before {
@@ -128,6 +131,12 @@ picture, picture * {
 
 .btn svg {
   margin-right: .5rem;
+}
+
+p.error {
+  color: red;
+  text-align: center;
+  font-size: 1.4rem;
 }
 
 header {
@@ -221,8 +230,16 @@ header h1 {
   }
 }
 
+.search-gif-container__results.error {
+  display: block;
+}
+
 .trending-gif-container h2 {
   margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+.trending-gif-container__picture-container {
   margin-bottom: 1.5rem;
 }
 

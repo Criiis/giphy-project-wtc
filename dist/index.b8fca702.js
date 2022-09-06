@@ -720,15 +720,18 @@ parcelHelpers.export(exports, "gifStructure", ()=>gifStructure);
 parcelHelpers.export(exports, "gifError", ()=>gifError);
 parcelHelpers.export(exports, "singleGifContainer", ()=>singleGifContainer);
 var _helpersJs = require("../helpers.js");
-const gifStructure = ({ title , images  })=>`
+const gifStructure = ({ title , images  })=>{
+    const gifDescription = title === "" ? "unknown gif" : title;
+    return `
 <picture>
-    <source type="image/webp" media="(max-width: 728px)" srcset="${images.preview_webp.url}" /> 
-    <source type="image/webp" srcset="${images.original.webp}" />
-    <source media="(max-width: 728px)" srcset="${images.preview_webp.url}" />
-    <img src="${images.original.url}" alt="${title}" loading="lazy" />
+    <source type="image/webp" media="(max-width: 728px)" srcset="${images.preview_webp.url}"/> 
+    <source type="image/webp" srcset="${images.original.webp}"/>
+    <source media="(max-width: 728px)" srcset="${images.preview_webp.url}"/>
+    <img src="${images.original.url}" alt="${gifDescription}" loading="lazy" />
 </picture>
 `;
-const gifError = (message)=>`<p>Sorry, ${message}. Try again.</p>`;
+};
+const gifError = (message)=>`<p class="error">Sorry, ${message}. Try again.</p>`;
 const singleGifContainer = (data, section = "search-gif-container")=>`
 <div class="${section === "search-gif-container" ? section : "trending-gif-container"}__picture-container">${gifStructure(data)}</div>`;
 class GeneralView {
@@ -738,6 +741,8 @@ class GeneralView {
             // get API data
             const data = await (0, _helpersJs.getJSON)(url);
             if (data.length === 0) throw new Error("Could not find any results");
+            //remove error from result div
+            this._resultContainer.classList.remove("error");
             //apply the each gif to the page
             data.forEach((gif)=>this._resultContainer.insertAdjacentHTML("beforeend", singleGifContainer(gif, this._sectionName)));
             // check the image is loaded or not for each picture container
