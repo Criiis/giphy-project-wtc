@@ -7,12 +7,4 @@ export const API_TOKEN = 'XSRthheAmTaIEIj4hLXVcyseFf4ME5Aa'
 
 export const API_RANDOM_GIF = `${API_URL}random?api_key=${API_TOKEN}&lang=en&rating=g`
 export const API_TRENDING_GIF = `${API_URL}trending?api_key=${API_TOKEN}&lang=en&rating=g&limit=10`
-export const API_SEARCH_GIF = `${API_URL}search?api_key=${API_TOKEN}`
-
-// RANDOM -> `${API_RANDOM_GIF}`
-// TRENDING -> `${API_TRENDING_GIF}`
-// SEARCH -> `${API_SEARCH_GIF}&q=cheeseburgers`
-
-console.log(API_RANDOM_GIF)
-console.log(API_TRENDING_GIF)
-console.log(`${API_SEARCH_GIF}&q=cheeseburgers`)
+export const API_SEARCH_GIF = `${API_URL}search?api_key=${API_TOKEN}&limit=30`
