@@ -1,23 +1,26 @@
 import { API_SEARCH_GIF } from '../config.js'
-import {
-  errorLoading,
-  getJSON,
-  promiseAllImage,
-  imageLoadChecker,
-} from '../helpers.js'
+import { errorLoading, getJSON, promiseAllImage } from '../helpers.js'
 import { singleGifContainer } from './viewHelpers.js'
 
 class SearchView {
-  _parentElement = document.querySelector('section.search-section')
-  imageParent = '.search-section--picture-container'
+  _sectionName = 'search-gif-container'
+  _imageParent = `.${this._sectionName}__picture-container`
+  _parentElement = document.querySelector(`section.${this._sectionName}`)
+  //search input
+  _formInputSearch = this._parentElement.querySelector(
+    `.${this._sectionName}__search-input`
+  )
+  //search button
+  _formCTASearch = this._parentElement.querySelector(
+    `.${this._sectionName}__search-btn`
+  )
+  //search results container
+  _searchResults = this._parentElement.querySelector(
+    `.${this._sectionName}__results`
+  )
 
-  formSearch = document.querySelector('.search-section--form')
-  formInputSearch = this.formSearch.querySelector('input#search')
-  formCTASearch = this.formSearch.querySelector('.btn')
-  searchResults = this._parentElement.querySelector('.search-section--results')
-
-  allImageParents = () =>
-    Array.from(document.querySelectorAll(this.imageParent))
+  _allImageParents = () =>
+    Array.from(document.querySelectorAll(this._imageParent))
 
   //fetch search gif api
   searchGif = async function (querySearch) {
@@ -29,35 +32,37 @@ class SearchView {
 
       // add data to page
       data.forEach(data =>
-        this.searchResults.insertAdjacentHTML(
+        this._searchResults.insertAdjacentHTML(
           'beforeend',
           singleGifContainer(data)
         )
       )
 
       // check the image is loaded or not
-      this.allImageParents().forEach(async container => {
+      this._allImageParents().forEach(async container => {
         try {
           await promiseAllImage(
             container.querySelectorAll('picture *'),
-            this.imageParent
+            this._imageParent
           )
         } catch (err) {
-          errorLoading(err, `Image not found`, this.imageParent)
+          console.error(err)
+          errorLoading(err, `Image not found`, this._imageParent)
         }
       })
     } catch (err) {
-      errorLoading(this.searchResults, err)
+      console.error(err)
+      errorLoading(this._searchResults, err)
     }
   }
 
   // click for when user search for
   searchHandler = () => {
-    this.formCTASearch.addEventListener('click', e => {
+    this._formCTASearch.addEventListener('click', e => {
       e.preventDefault()
-      const searchValue = this.formInputSearch
+      const searchValue = this._formInputSearch
+      this._searchResults.innerHTML = ''
 
-      this.searchResults.innerHTML = ''
       this.searchGif(searchValue.value) //filter the value
       searchValue.value = ''
     })
