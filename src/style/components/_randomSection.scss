@@ -1,56 +1,17 @@
-.random-section {
-  // max-width: 48rem;
-  // display: none;
-  width: 100%;
-
+.random-gif-container {
   h2 {
     margin-top: 0;
     margin-bottom: 1.5rem;
   }
 
-  &--picture-container {
-    width: 100%;
-    min-height: 20rem;
-    background-color: #d9d9d9;
-    margin-bottom: 1.5rem;
-    position: relative;
+  &__picture-container {
     display: flex;
     align-content: center;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     flex-wrap: nowrap;
-
-    &:before {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-color: #d9d9d9;
-      background-image: linear-gradient(
-        to right,
-        #d9d9d9 0%,
-        #888b94 20%,
-        #d9d9d9 40%,
-        #d9d9d9 100%
-      );
-      z-index: 1;
-      background-repeat: no-repeat;
-      animation: shimmer 2s linear infinite;
-    }
-    &.loaded {
-      @extend %loaded;
-    }
-    &.error {
-      @extend %error;
-    }
-  }
-
-  &--picture {
-    width: 100%;
-    height: auto;
-    * {
-      width: 100%;
-    }
+    margin-bottom: 1.5rem;
+    @extend %pictureContainer;
   }
 }

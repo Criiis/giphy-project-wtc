@@ -24,11 +24,18 @@ body {
 
   @include media('min-desktop') {
     display: grid;
-    grid-template-columns: 48rem calc(100% - 48rem);
+    grid-template-columns: 2fr 3fr 1fr;
   }
 
   section {
     width: 100%;
     padding: 0 2rem;
+  }
+}
+
+picture {
+  width: 100%;
+  * {
+    width: 100%;
   }
 }

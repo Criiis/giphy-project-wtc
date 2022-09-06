@@ -1,0 +1,10 @@
+.trending-section {
+  h2 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+  }
+
+  &--picture-container {
+    @extend %pictureContainer;
+  }
+}

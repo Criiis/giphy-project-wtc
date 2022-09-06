@@ -6,6 +6,7 @@
   justify-content: space-evenly;
   align-content: center;
   flex-wrap: nowrap;
+  list-style: none;
   padding: var(--small-general-padding);
   margin: 0;
   @include media('min-desktop') {
