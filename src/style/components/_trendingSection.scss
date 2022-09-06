@@ -4,8 +4,19 @@
     margin-bottom: 1.5rem;
   }
 
+  &__results {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1.5rem;
+    @include media('min-desktop') {
+      display: block;
+    }
+  }
+
   &__picture-container {
     @extend %pictureContainer;
-    margin-bottom: 1.5rem;
+    @include media('min-desktop') {
+      margin-bottom: 1.5rem;
+    }
   }
 }

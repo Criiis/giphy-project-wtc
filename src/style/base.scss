@@ -20,16 +20,22 @@ body {
 
 .main-content {
   padding: var(--small-general-padding);
-  min-height: calc(100vh - 7rem);
-
   @include media('min-desktop') {
+    min-height: calc(100vh - 7rem);
     display: grid;
     grid-template-columns: 2fr 3fr 1fr;
   }
 
-  section {
+  .section {
+    display: none;
     width: 100%;
     padding: 0 2rem;
+    @include media('min-desktop') {
+      display: block;
+    }
+    &--active {
+      display: block;
+    }
   }
 }
 
