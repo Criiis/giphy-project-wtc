@@ -1,7 +1,7 @@
 /**
  * where the magic will happen all the action will happen
  */
-import { API_SEARCH_GIF } from './config.js'
+import { API_SEARCH_GIF, API_TRENDING_GIF } from './config.js'
 import {
   errorLoading,
   getJSON,
@@ -35,10 +35,51 @@ import { gifStructure, singleGifContainer } from './views/viewHelpers.js'
 // Error handling is considered
 // Read me file on steps to run
 // Steps required to run the project locally
+
+const trendingFetch = async function () {
+  try {
+    // get API data
+    const data = await getJSON(API_TRENDING_GIF)
+    console.log(data)
+
+    data.forEach(data =>
+      document
+        .querySelector('.trending-section--results')
+        .insertAdjacentHTML('beforeend', singleGifContainer(data))
+    )
+
+    // check the image is loaded or not
+    Array.from(
+      document.querySelectorAll(
+        '.trending-section--results .search-section--picture-container'
+      )
+    ).forEach(async container => {
+      try {
+        console.log(container)
+        await promiseAllImage(
+          container.querySelectorAll('picture *'),
+          '.search-section--picture-container'
+        )
+      } catch (err) {
+        errorLoading(
+          err,
+          `Image not found`,
+          '.search-section--picture-container'
+        )
+        console.error(err)
+      }
+    })
+  } catch (err) {
+    console.log(err)
+    errorLoading(document.querySelector('.trending-section--results'), err)
+  }
+}
+
 ;(function () {
   randomView.controlRandom() // initialize the random gif
   randomView.reloadHandler() //add click event for "next" in random section
 
   //add search functionality
   searchView.searchHandler()
+  // trendingFetch()
 })()

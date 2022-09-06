@@ -63,6 +63,7 @@ export const promiseAllImage = async (pictureChild, pictureParent) => {
       })
     )
   } catch (error) {
+    console.error(error)
     throw error
   }
 }
@@ -86,7 +87,6 @@ export const gifLoading = (imageParentContainer, data) => {
  */
 export const errorLoading = (element, error, imageContainer = undefined) => {
   element = imageContainer ? element.closest(imageContainer) : element //had to do this cause element can be an image and i need the container of the picture/image checky tho
-  console.log(element)
   element.innerHTML = ''
   element.insertAdjacentHTML('beforeend', gifError(error))
   element.classList.add('error')
