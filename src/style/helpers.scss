@@ -1,7 +1,7 @@
 %pictureContainer {
   width: 100%;
   min-height: 20rem;
-  background-color: #2e2e2e;
+  background-color: var(--dark-secondary);
   position: relative;
 
   &:before {
@@ -9,13 +9,13 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: #2e2e2e;
+    background-color: var(--dark-secondary);
     background-image: linear-gradient(
       to right,
-      #2e2e2e 0%,
-      #888b94 20%,
-      #2e2e2e 40%,
-      #2e2e2e 100%
+      var(--dark-secondary) 0%,
+      var(--dark-primary) 20%,
+      var(--dark-secondary) 40%,
+      var(--dark-secondary) 100%
     );
     z-index: 1;
     background-repeat: no-repeat;
@@ -62,7 +62,7 @@
 }
 
 p.error {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   color: red;
   text-align: center;
 }
