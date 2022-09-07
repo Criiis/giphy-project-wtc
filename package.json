@@ -8,7 +8,8 @@
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
     "start": "parcel index.html",
-    "build": "parcel build index.html --dist-dir ./dist"
+    "build": "parcel build index.html --dist-dir ./dist --public-url ./",
+    "deploy": "rm -rf dist/ && yarn build && gh-pages -d dist"
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.7.0",
