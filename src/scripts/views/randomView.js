@@ -1,9 +1,10 @@
-import { API_RANDOM_GIF } from '../config.js'
+import { API_RANDOM_GIF, API_TIMEOUT_SEC } from '../config.js'
 import {
   errorLoading,
   getJSON,
   gifLoading,
   promiseAllImage,
+  timeout,
 } from '../helpers.js'
 
 class RandomView {
@@ -25,8 +26,11 @@ class RandomView {
   //API Fetch call for this view
   controlRandom = async function () {
     try {
-      // get API data
-      const data = await getJSON(API_RANDOM_GIF)
+      // get API data -> also has a timeout in case the API call for some reason takes more than 15s to respond it will throw an error
+      const data = await Promise.race([
+        getJSON(API_RANDOM_GIF),
+        timeout(API_TIMEOUT_SEC),
+      ])
       // add gif structure into the page
       gifLoading(this._pictureParentSection(), data)
       // await and remove the loading screen when gif is loaded

@@ -1,4 +1,5 @@
-import { errorLoading, getJSON, promiseAllImage } from '../helpers.js'
+import { API_TIMEOUT_SEC } from '../config.js'
+import { errorLoading, getJSON, promiseAllImage, timeout } from '../helpers.js'
 
 /**
  *
@@ -42,8 +43,8 @@ export default class GeneralView {
   fetchingGifData = async function (url) {
     try {
       if (!url) throw new Error('Could not fetch data')
-      // get API data
-      const data = await getJSON(url)
+      // get API data -> also has a timeout in case the API call for some reason takes more than 15s to respond it will throw an error
+      const data = await Promise.race([getJSON(url), timeout(API_TIMEOUT_SEC)])
       if (data.length === 0) throw new Error('Could not find any results')
 
       //remove error from result div
