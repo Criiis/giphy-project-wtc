@@ -10,10 +10,17 @@ export const navController = e => {
   const sectionActivateClass = 'section--active'
 
   //remove class for nav and section
-  allNavItems.forEach(el => el.classList.remove(navActivateClass))
+  allNavItems.forEach(el => {
+    el.setAttribute('aria-selected', false)
+    el.classList.remove(navActivateClass)
+  })
   allSectionItems.forEach(el => el.classList.remove(sectionActivateClass))
 
   //add class for active nav and section
   button.classList.add(navActivateClass)
+  button.setAttribute('aria-selected', true)
+
   sectionToActivate.classList.add(sectionActivateClass)
+
+  sectionToActivate.children[0].focus()
 }
