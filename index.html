@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The giphy project">
     <link rel="icon" href="src/images/giphy_favicon.png" type="image/x-icon" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,9 +25,9 @@
         <h1 class="heading-1">GIPHY PROJECT</h1>
     </header>
     <!-- nav items -->
-    <nav class="nav">
+    <nav class="nav" role="tablist">
         <a href="#" class="nav__item nav__item--active" data-section="random-gif-container"
-            aria-label="open random gif section">
+            aria-label="open random gif section" role="tab" aria-selected="true">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                 aria-hidden="true" focusable="false">
                 <path
@@ -39,7 +40,8 @@
                     stroke-linejoin="round" />
             </svg>
         </a>
-        <a href="#" class="nav__item" data-section="search-gif-container" aria-label="open search gif section">
+        <a href="#" class="nav__item" aria-selected="false" data-section="search-gif-container"
+            aria-label="open search gif section" role="tab" aria-selected="false">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                 aria-hidden="true" focusable="false">
                 <path
@@ -49,7 +51,8 @@
                     stroke-linejoin="round" />
             </svg>
         </a>
-        <a href="#" class="nav__item" data-section="trending-gif-container" aria-label="open trending gifs section">
+        <a href="#" class="nav__item" role="tab" data-section="trending-gif-container"
+            aria-label="open trending gifs section" role="tab" aria-selected="false">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                 aria-hidden="true" focusable="false">
                 <path
@@ -62,7 +65,7 @@
     <main class="main-content" aria-label="content">
         <!-- random gif section -->
         <section class="random-gif-container section section--active" aria-label="Random gif">
-            <h2 class="heading-1">Random</h2>
+            <h2 class="heading-1" tabindex="0">Random</h2>
             <div class="random-gif-container__picture-container"></div>
 
             <button class="btn random-gif-container__shuffle-gif" aria-label="shuffle Gif">
@@ -88,10 +91,11 @@
         </section>
         <!-- search gif section -->
         <section class="search-gif-container section" aria-label="Search for a gif">
-            <h2 class="heading-1">Finder</h2>
+            <h2 class="heading-1" tabindex="0">Finder</h2>
 
             <form action="" class="search-gif-container__form">
-                <label for="search" class="search-gif-container__label-input">search from a GIPHY</label><br />
+                <label for="search" class="search-gif-container__label-input" aria-hidden="true">search from a
+                    GIPHY</label><br />
                 <input type="text" id="search" name="search gif" class="search-gif-container__search-input"><br />
 
                 <button class="btn search-gif-container__search-btn">
@@ -110,7 +114,7 @@
         </section>
         <!-- trending gif section -->
         <section class="trending-gif-container section" aria-label="Trending gifs">
-            <h2 class="heading-1">Trending</h2>
+            <h2 class="heading-1" tabindex="0">Trending</h2>
             <div class="trending-gif-container__results"></div>
         </section>
     </main>
