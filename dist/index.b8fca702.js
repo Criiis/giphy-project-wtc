@@ -536,25 +536,14 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 /**
  * where the magic will happen all the action will happen
  */ var _configJs = require("./config.js");
+var _controllerJs = require("./controller.js");
 var _randomViewJs = require("./views/randomView.js");
 var _randomViewJsDefault = parcelHelpers.interopDefault(_randomViewJs);
 var _searchViewJs = require("./views/searchView.js");
 var _searchViewJsDefault = parcelHelpers.interopDefault(_searchViewJs);
 var _trendingViewJs = require("./views/trendingView.js");
 var _trendingViewJsDefault = parcelHelpers.interopDefault(_trendingViewJs);
-//review and optimize this
-document.querySelector(".nav").addEventListener("click", function(e) {
-    e.preventDefault();
-    const button = e.target.closest(".nav__item");
-    const dataSection = button.dataset.section;
-    const navActivateClass = "section--active";
-    const sectionActivateClass = "section--active";
-    // const 
-    Array.from(document.querySelectorAll(".nav__item")).forEach((el)=>el.classList.remove(navActivateClass));
-    button.classList.add(navActivateClass);
-    Array.from(document.querySelectorAll(".section")).forEach((el)=>el.classList.remove(sectionActivateClass));
-    document.querySelector(`.${dataSection}`).classList.add(sectionActivateClass);
-});
+const nav = document.querySelector(".nav");
 (function() {
     // initialize the random gif
     (0, _randomViewJsDefault.default).controlRandom();
@@ -564,16 +553,20 @@ document.querySelector(".nav").addEventListener("click", function(e) {
     (0, _searchViewJsDefault.default).searchHandler();
     //load trending gifs
     (0, _trendingViewJsDefault.default).fetchingGifData((0, _configJs.API_TRENDING_GIF));
+    //nav clicks for mobile
+    nav.addEventListener("click", (0, _controllerJs.navController));
 })();
 
-},{"./config.js":"6pDRM","./views/randomView.js":"9yuIi","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/searchView.js":"bLyxo","./views/trendingView.js":"j2yS0"}],"6pDRM":[function(require,module,exports) {
+},{"./config.js":"6pDRM","./views/randomView.js":"9yuIi","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/searchView.js":"bLyxo","./views/trendingView.js":"j2yS0","./controller.js":"iLTxj"}],"6pDRM":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "API_TIMEOUT_SEC", ()=>API_TIMEOUT_SEC);
 parcelHelpers.export(exports, "API_URL", ()=>API_URL);
 parcelHelpers.export(exports, "API_TOKEN", ()=>API_TOKEN);
 parcelHelpers.export(exports, "API_RANDOM_GIF", ()=>API_RANDOM_GIF);
 parcelHelpers.export(exports, "API_TRENDING_GIF", ()=>API_TRENDING_GIF);
 parcelHelpers.export(exports, "API_SEARCH_GIF", ()=>API_SEARCH_GIF);
+const API_TIMEOUT_SEC = 15;
 const API_URL = "https://api.giphy.com/v1/gifs/";
 const API_TOKEN = "XSRthheAmTaIEIj4hLXVcyseFf4ME5Aa";
 const API_RANDOM_GIF = `${API_URL}random?api_key=${API_TOKEN}&lang=en&rating=g`;
@@ -630,8 +623,11 @@ class RandomView {
     //API Fetch call for this view
     controlRandom = async function() {
         try {
-            // get API data
-            const data = await (0, _helpersJs.getJSON)((0, _configJs.API_RANDOM_GIF));
+            // get API data -> also has a timeout in case the API call for some reason takes more than 15s to respond it will throw an error
+            const data = await Promise.race([
+                (0, _helpersJs.getJSON)((0, _configJs.API_RANDOM_GIF)),
+                (0, _helpersJs.timeout)((0, _configJs.API_TIMEOUT_SEC)), 
+            ]);
             // add gif structure into the page
             (0, _helpersJs.gifLoading)(this._pictureParentSection(), data);
             // await and remove the loading screen when gif is loaded
@@ -732,6 +728,7 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "gifStructure", ()=>gifStructure);
 parcelHelpers.export(exports, "gifError", ()=>gifError);
 parcelHelpers.export(exports, "singleGifContainer", ()=>singleGifContainer);
+var _configJs = require("../config.js");
 var _helpersJs = require("../helpers.js");
 const gifStructure = ({ title , images  })=>{
     const gifDescription = title === "" ? "unknown gif" : title;
@@ -751,8 +748,11 @@ class GeneralView {
     fetchingGifData = async function(url) {
         try {
             if (!url) throw new Error("Could not fetch data");
-            // get API data
-            const data = await (0, _helpersJs.getJSON)(url);
+            // get API data -> also has a timeout in case the API call for some reason takes more than 15s to respond it will throw an error
+            const data = await Promise.race([
+                (0, _helpersJs.getJSON)(url),
+                (0, _helpersJs.timeout)((0, _configJs.API_TIMEOUT_SEC))
+            ]);
             if (data.length === 0) throw new Error("Could not find any results");
             //remove error from result div
             this._resultContainer.classList.remove("error");
@@ -778,7 +778,7 @@ class GeneralView {
 }
 exports.default = GeneralView;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../helpers.js":"luDvE"}],"bLyxo":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../helpers.js":"luDvE","../config.js":"6pDRM"}],"bLyxo":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _configJs = require("../config.js");
@@ -827,6 +827,27 @@ class TrendingView extends (0, _viewHelpersDefault.default) {
 }
 exports.default = new TrendingView();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./viewHelpers":"iA7j9"}]},["7age3","3cYfC"], "3cYfC", "parcelRequireb58f")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./viewHelpers":"iA7j9"}],"iLTxj":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "navController", ()=>navController);
+const navController = (e)=>{
+    e.preventDefault();
+    const button = e.target.closest(".nav__item");
+    const dataSection = button.dataset.section;
+    const allNavItems = Array.from(document.querySelectorAll(".nav__item"));
+    const allSectionItems = Array.from(document.querySelectorAll(".section"));
+    const sectionToActivate = document.querySelector(`.${dataSection}`);
+    const navActivateClass = "nav__item--active";
+    const sectionActivateClass = "section--active";
+    //remove class for nav and section
+    allNavItems.forEach((el)=>el.classList.remove(navActivateClass));
+    allSectionItems.forEach((el)=>el.classList.remove(sectionActivateClass));
+    //add class for active nav and section
+    button.classList.add(navActivateClass);
+    sectionToActivate.classList.add(sectionActivateClass);
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["7age3","3cYfC"], "3cYfC", "parcelRequireb58f")
 
 //# sourceMappingURL=index.b8fca702.js.map
