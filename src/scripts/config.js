@@ -2,6 +2,7 @@
  * all config needed for this project // some of this things could be in a .env file
  */
 
+export const API_TIMEOUT_SEC = 15
 export const API_URL = 'https://api.giphy.com/v1/gifs/'
 export const API_TOKEN = 'XSRthheAmTaIEIj4hLXVcyseFf4ME5Aa'
 
