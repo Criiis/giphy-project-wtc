@@ -1,5 +1,5 @@
 # GIPHY PROJECT
-
+public url: https://criiis.github.io/giphy-project-wtc/
 Foobar is a web app created with vanilla js, sass/CSS, and HTML for searching for random specific, and trending gifs, using parcel to compile all code.
 
 ## Installation
