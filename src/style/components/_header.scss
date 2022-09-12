@@ -1,6 +1,6 @@
 header {
   padding: var(--small-general-padding);
-  background-color: black;
+  background-color: var(--dark-color);
   text-align: center;
   @include media('min-desktop') {
     padding: var(--small-general-padding) var(--big-general-padding);
