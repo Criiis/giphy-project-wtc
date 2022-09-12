@@ -1,8 +1,8 @@
 @keyframes shimmer {
   0% {
-    background-position: -28.125rem 0rem;
+    transform: translate(-50%, -50%) rotate(0deg);
   }
   100% {
-    background-position: 28.125rem 0rem;
+    transform: translate(-50%, -50%) rotate(360deg);
   }
 }
