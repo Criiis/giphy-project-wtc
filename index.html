@@ -94,9 +94,9 @@
             <h2 class="heading-1" tabindex="0">Finder</h2>
 
             <form action="" class="search-gif-container__form">
-                <label for="search" class="search-gif-container__label-input" aria-hidden="true">search from a
+                <label for="searchGif" class="search-gif-container__label-input">search from a
                     GIPHY</label><br />
-                <input type="text" id="search" name="search gif" class="search-gif-container__search-input"><br />
+                <input type="text" id="searchGif" name="search" class="search-gif-container__search-input"><br />
 
                 <button class="btn search-gif-container__search-btn">
                     <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -121,3 +121,30 @@
 </body>
 
 </html>
+
+
+
+<!-- Your form elements do not have an associated label
+res: issue was that i had "aria-hidden="true"" in the label and lighthouse wasn't reading the label for the input (didn't know this was affecting the accessability)-->
+
+<!-- The background colours do not have a sufficient contrast ratio in the error message.
+    res: I have changed the color and made the text bigger-->
+
+You have tried to be creative with your loading spinner, which is nice, but I am not sure if it looks like a spinner or
+if something went wrong. We always need to be very clear to the user.
+
+<!-- In your styling, you used percentages for font size and mentioned it is 10px as a comment. There is no need to use
+percentages as a constant. We use it mostly in width, which depends on the user's monitor.
+You also sometimes used rem and sometimes px. It is advised to use one unit system in a project. -->
+
+
+<!-- should the breakpoints be in rem as well? because, yeah by default the browser is 16px  but as we know people with accessability can change that setting 
+the browser and make the default value being 20px and in this case this means the breakpoint can't be in rem example:
+
+768px is 48rem if the default font-size is 16px
+but if someone changes the default font-size of the browser for some reason this means that 
+768px will be 38.4rem
+
+so in my opinion breakpoint should be in px all time, but pls let me know your thoughts.
+
+-->
