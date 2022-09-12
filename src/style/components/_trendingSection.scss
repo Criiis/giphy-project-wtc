@@ -1,13 +1,13 @@
 .trending-gif-container {
   h2 {
     margin-top: 0;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.938rem;
   }
 
   &__results {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-gap: 1.5rem;
+    grid-gap: 0.938rem;
     @include media('min-desktop') {
       display: block;
     }
@@ -16,7 +16,7 @@
   &__picture-container {
     @extend %pictureContainer;
     @include media('min-desktop') {
-      margin-bottom: 1.5rem;
+      margin-bottom: 0.938rem;
     }
   }
 }

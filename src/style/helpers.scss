@@ -1,6 +1,6 @@
 %pictureContainer {
   width: 100%;
-  min-height: 20rem;
+  min-height: 12.5rem;
   background-color: var(--dark-secondary);
   position: relative;
 
@@ -46,23 +46,24 @@
 .btn {
   width: 100%;
   text-align: center;
-  padding: 1.2rem;
+  padding: 0.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
   align-content: center;
   flex-wrap: nowrap;
   flex-direction: row;
-  font-size: 1.6rem;
+  font-size: 1rem;
   cursor: pointer;
   color: var(--color-primary);
   svg {
-    margin-right: 0.5rem;
+    margin-right: 0.313rem;
   }
 }
 
 p.error {
-  font-size: 1.6rem;
   color: var(--error-color);
   text-align: center;
+  font-size: 1.4rem;
+  font-weight: 600;
 }

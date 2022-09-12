@@ -4,20 +4,20 @@
 
 .heading-1 {
   font-size: 700;
-  font-size: 3.4rem;
+  font-size: 2.125rem;
 }
 
 .heading-2 {
   @extend %heading;
-  font-size: 3rem;
+  font-size: 1.875rem;
 }
 
 .heading-3 {
   @extend %heading;
-  font-size: 2.6rem;
+  font-size: 1.625rem;
 }
 
 .heading-4 {
   @extend %heading;
-  font-size: 1.9rem;
+  font-size: 1.188rem;
 }

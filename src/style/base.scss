@@ -6,7 +6,6 @@
 
 html {
   box-sizing: border-box;
-  font-size: 62.5%; //10px
 }
 
 body {
@@ -18,14 +17,14 @@ body {
   min-height: 100vh;
   *:focus-visible,
   *:focus {
-    outline: 3px solid var(--color-primary);
+    outline: 0.188rem solid var(--color-primary);
   }
 }
 
 .main-content {
   padding: var(--small-general-padding);
   @include media('min-desktop') {
-    min-height: calc(100vh - 7rem);
+    min-height: calc(100vh - 4.375rem);
     display: grid;
     grid-template-columns: 2fr 3fr 1fr;
   }
@@ -33,7 +32,7 @@ body {
   .section {
     display: none;
     width: 100%;
-    padding: 0 2rem;
+    padding: 0 1.25rem;
     @include media('min-desktop') {
       display: block;
     }

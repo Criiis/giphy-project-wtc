@@ -1,7 +1,7 @@
 .random-gif-container {
   h2 {
-    margin-top: 0;
-    margin-bottom: 1.5rem;
+    margin-top: 0rem;
+    margin-bottom: 0.938rem;
   }
 
   &__picture-container {
@@ -11,7 +11,7 @@
     justify-content: center;
     flex-direction: column;
     flex-wrap: nowrap;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.938rem;
     @extend %pictureContainer;
   }
 }
